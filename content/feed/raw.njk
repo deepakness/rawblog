@@ -1,0 +1,16 @@
+---
+permalink: /feed/raw.xml
+eleventyExcludeFromCollections:
+  - raw
+eleventyImport:
+  collections:
+    - raw
+layout: false
+feed:
+  label: "Notes"
+  subtitle: "Short notes, links, and thoughts."
+  path: "/raw/"
+---
+{%- set feedEntries = collections.raw | reverse | head(30) -%}
+{%- set feedUpdated = collections.raw | getNewestCollectionModifiedDate -%}
+{% include "atom-feed.njk" %}

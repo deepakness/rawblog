@@ -1,0 +1,25 @@
+---js
+const numberOfLatestEntriesToShow = 12;
+---
+
+<h1 class="visually-hidden">{{ metadata.title }}</h1>
+
+{# Edit this intro in content/index.njk #}
+<p>Hi, I'm {{ metadata.author.name }}. This is my corner of the internet, with longer <a href="/blog/">blog posts</a> and short <a href="/raw/">raw notes</a>.</p>
+
+<p>See what I'm working on <a href="/now/">right now</a> or browse my <a href="/projects/">projects</a>.</p>
+
+{# Combined feed: blog posts + raw notes #}
+{% set feedCount = collections.archiveFeed | length %}
+{% set latestEntriesCount = feedCount | min(numberOfLatestEntriesToShow) %}
+<h2>Latest {{ latestEntriesCount }} update{% if latestEntriesCount != 1 %}s{% endif %}</h2>
+
+{% set blendedFeed = collections.homeFeedBlended or collections.archiveFeed %}
+{% set homeFeedList = blendedFeed | head(numberOfLatestEntriesToShow) %}
+{% set homeFeedCounter = feedCount %}
+{% include "homefeedlist.njk" %}
+
+{% set moreEntries = feedCount - numberOfLatestEntriesToShow %}
+{% if moreEntries > 0 %}
+<p>{{ moreEntries }} more update{% if moreEntries != 1 %}s{% endif %} can be found in the <a href="/archive/">combined archive</a>. You can also browse only <a href="/blog/">blog posts</a> (longer posts) or <a href="/raw/">only notes</a> (shorter notes) archives.</p>
+{% endif %}

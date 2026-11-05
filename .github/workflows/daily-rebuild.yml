@@ -1,0 +1,42 @@
+# The site only rebuilds when something is pushed, so /stats, the footer
+# counts, and GitHub contribution numbers go stale on quiet days. This pokes a
+# Cloudflare Pages deploy hook once a day so nothing falls more than 24 hours
+# behind.
+#
+# Setup: Cloudflare dashboard → your Pages project → Settings → Builds →
+# Deploy hooks → add one for your production branch, then save its URL as the
+# repository secret CF_DEPLOY_HOOK. Without the secret this job does nothing.
+# GitHub pauses scheduled workflows after 60 days without repository activity.
+name: Daily rebuild
+
+permissions: {}
+
+on:
+  schedule:
+    # 00:30 UTC. Shift it to just after midnight in your site timezone.
+    - cron: "30 0 * * *"
+  # Lets you run it by hand from the Actions tab without waiting for the cron.
+  workflow_dispatch:
+
+# If a run is somehow still going when the next fires, drop the older one
+# rather than stacking builds.
+concurrency:
+  group: daily-rebuild
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the Cloudflare Pages deploy hook
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "CF_DEPLOY_HOOK secret is not set, skipping."
+            exit 0
+          fi
+          # --fail turns an HTTP error into a failed run, so a revoked or
+          # mistyped hook surfaces instead of failing silently every night.
+          curl --fail --silent --show-error --request POST "$HOOK"
+          echo "Build triggered."

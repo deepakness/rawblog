@@ -1,0 +1,65 @@
+---
+title: "Projects"
+description: "A list of things I've built and shipped."
+date: 2026-11-01
+image: /img/og/projects.jpeg
+---
+
+{%- set statusOrder = ['active', 'stable', 'acquired', 'retired', 'abandoned', 'dead'] -%}
+
+{% set mainCount = 0 %}
+{%- for project in projects.projects -%}
+  {%- if project.type != 'mini' %}{% set mainCount = mainCount + 1 %}{% endif -%}
+{%- endfor -%}
+
+<h1>{{title}}</h1>
+
+<p>Here are some things I've built and shipped.</p>
+
+<ol class="project-list">
+    {%- for status in statusOrder -%}
+    {%- for project in projects.projects -%}
+        {%- if project.type != 'mini' and project.status == status -%}
+    <li>
+        {%- if project.status == 'dead' %}
+        <span class="project-name project-dead">{{ project.title }}</span>
+        {%- else %}
+        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="project-name">{{ project.title }}</a>
+        {%- endif %} <span class="status status-{{ project.status }}">{{ project.status }}</span>
+        <span class="project-description">{{ project.description | safe }}</span>
+    </li>
+        {%endif%}
+    {%- endfor -%}
+    {%- endfor -%}
+</ol>
+
+<p>Apart from the above, here are some smaller things I've built – mini tools, extensions, and experiments.</p>
+
+<ol class="project-list" start="{{ mainCount + 1 }}">
+    {%- for status in statusOrder -%}
+    {%- for project in projects.projects | sort(attribute='title') -%}
+        {%- if project.type == 'mini' and project.status == status -%}
+    <li>
+        {%- if project.status == 'dead' %}
+        <span class="project-name project-dead">{{ project.title }}</span>
+        {%- else %}
+        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="project-name">{{ project.title }}</a>
+        {%- endif %}{% if project.status %} <span class="status status-{{ project.status }}">{{ project.status }}</span>{% endif %}
+        <span class="project-description">{{ project.description | safe }}</span>
+    </li>
+        {%endif%}
+    {%- endfor -%}
+    {%- endfor -%}
+</ol>
+
+<p>For what I'm focused on day to day, see my <a href="/now/">Now</a> page.</p>
+
+<h2 class="status-legend-heading">What labels mean</h2>
+<ul class="status-legend">
+    <li><span class="status status-active">active</span> actively maintained and updated</li>
+    <li><span class="status status-stable">stable</span> functional, not actively developed</li>
+    <li><span class="status status-acquired">acquired</span> sold to someone else</li>
+    <li><span class="status status-retired">retired</span> served its purpose, no longer needed</li>
+    <li><span class="status status-abandoned">abandoned</span> accessible but unmaintained</li>
+    <li><span class="status status-dead">dead</span> no longer accessible</li>
+</ul>

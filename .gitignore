@@ -1,0 +1,27 @@
+_site/
+node_modules/
+.pnpm-store/
+.cache
+.DS_Store
+.env
+
+# Using Cloudflare R2 for media (ASSET_ORIGIN set)? Uncomment these so
+# co-located images and videos stay out of git; `pnpm ready` uploads them.
+# content/blog/*/*.png
+# content/blog/*/*.jpg
+# content/blog/*/*.jpeg
+# content/blog/*/*.webp
+# content/blog/*/*.avif
+# content/blog/*/*.gif
+# content/blog/*/*.mp4
+# content/blog/*/*.mov
+# content/blog/*/*.webm
+# content/raw/*/*.png
+# content/raw/*/*.jpg
+# content/raw/*/*.jpeg
+# content/raw/*/*.webp
+# content/raw/*/*.avif
+# content/raw/*/*.gif
+# content/raw/*/*.mp4
+# content/raw/*/*.mov
+# content/raw/*/*.webm

@@ -1,0 +1,17 @@
+---
+permalink: /search-index-raw.json
+layout: false
+eleventyExcludeFromCollections: true
+---
+[
+{%- for post in collections.raw -%}
+  {
+    "url": {{ post.url | dump | safe }},
+    "title": {{ post.data.title | dump | safe }},
+    "description": {{ (post.data.description or '') | dump | safe }},
+    "tags": {{ (post.data.tags or []) | dump | safe }},
+    "content": {{ (post.templateContent | striptags | replace('\n', ' ') | replace('\t', ' ') | truncate(500, true, '')) | dump | safe }},
+    "date": {{ (post.date | dateToISO) | dump | safe }}
+  }{% if not loop.last %},{% endif %}
+{%- endfor -%}
+]

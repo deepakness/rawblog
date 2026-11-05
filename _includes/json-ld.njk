@@ -1,0 +1,55 @@
+{#-
+  Schema.org JSON-LD for a personal site.
+  - Blog posts + raw notes: BlogPosting (Person author/publisher)
+  - Home: WebSite + Person (+ SearchAction)
+  - About: ProfilePage → Person
+  Skipped on noindex pages.
+  Expects socialImageUrl already set in base.njk (same as OG image).
+-#}
+{%- if not index or ('noindex' not in index) -%}
+{%- set pageUrl = canonicalUrl or (metadata.url + page.url) -%}
+{%- set jsonLdPayload = null -%}
+
+{%- if layout == 'layouts/post.njk' or layout == 'layouts/raw.njk' -%}
+  {%- set jsonLdPayload = 'blogPosting' | buildJsonLd({
+    siteUrl: metadata.url,
+    authorName: metadata.author.name,
+    authorUrl: metadata.author.url,
+    authorEmail: metadata.author.email,
+    language: metadata.language,
+    headline: title,
+    description: description,
+    pageUrl: pageUrl,
+    datePublished: page.date | isoDateString,
+    dateModified: (updated if updated else page.date) | isoDateString,
+    image: socialImageUrl
+  }) -%}
+{%- elif page.url == '/' -%}
+  {%- set jsonLdPayload = 'home' | buildJsonLd({
+    siteUrl: metadata.url,
+    siteName: metadata.title,
+    siteDescription: metadata.description,
+    authorName: metadata.author.name,
+    authorUrl: metadata.author.url,
+    authorEmail: metadata.author.email,
+    sameAs: metadata.author.sameAs,
+    language: metadata.language
+  }) -%}
+{%- elif page.url == '/about/' -%}
+  {%- set jsonLdPayload = 'about' | buildJsonLd({
+    siteUrl: metadata.url,
+    authorName: metadata.author.name,
+    authorUrl: metadata.author.url,
+    authorEmail: metadata.author.email,
+    sameAs: metadata.author.sameAs,
+    personDescription: description or metadata.description,
+    pageUrl: pageUrl,
+    pageName: title or 'About',
+    language: metadata.language
+  }) -%}
+{%- endif -%}
+
+{%- if jsonLdPayload -%}
+<script type="application/ld+json">{{ jsonLdPayload | jsonLdString | safe }}</script>
+{%- endif -%}
+{%- endif -%}

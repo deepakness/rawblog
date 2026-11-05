@@ -1,0 +1,39 @@
+---
+layout: layouts/base.njk
+---
+
+<article class="post-article">
+  <h1>{{ title }}</h1>
+  {%- set tagsList = tags | filterTagList %}
+  <ul class="post-metadata">
+    <li>
+      {#- The updated note sits outside <time> so the published date can be a
+          single unbreakable run while the note still wraps on its own. -#}
+      <time datetime="{{ page.date | htmlDateString }}">{% phicon "calendar-dot" %} {{ page.date | readableDatetime }}</time>
+      {%- if updated %}
+        <span class="post-metadata-updated">(updated on {{ updated | readableDate }})</span>
+      {%- endif %}
+    </li>
+    <li>{% phicon "text-align-left" %} {{ page.inputPath | readingTimeMinutes }} ({{ page.inputPath | wordCount }})</li>
+    {%- if tagsList.length %}
+      <li class="post-metadata-tags">{% phicon "hash" %}
+        {%- for tag in tagsList %}
+          {%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
+          <a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{% if not loop.last %}<span class="post-tag-sep">·</span>{% endif %}
+        {%- endfor %}
+      </li>
+    {%- endif %}
+  </ul>
+  {{ content | safe }}
+  {%- if affiliate == true and metadata.affiliateNote %}
+  <p class="affiliate-note">
+    <span class="affiliate-note-icon" aria-hidden="true">{% phicon "gift" %}</span>
+    {{ metadata.affiliateNote }}
+  </p>
+  {%- endif %}
+</article>
+{% include "post-share.njk" %}
+{% include "keep-reading.njk" %}
+<div class="post-comments">
+  {% include "comments.njk" %}
+</div>

@@ -1,0 +1,44 @@
+<div class="search-container" data-search-widget{% if syncUrl %} data-sync-url="true"{% endif %}{% if autofocus %} data-autofocus="true"{% endif %}>
+  <form id="search-form" class="search-form" role="search">
+    <div class="search-input-row">
+      <input
+        type="search"
+        id="search-input"
+        class="search-input"
+        placeholder="Type keywords to search…"
+        aria-label="Search across blog posts and raw notes"
+        autocomplete="off"
+      >
+      <button type="submit" class="search-button" aria-label="Search">
+        {% phicon "magnifying-glass" %}
+        <span>Search</span>
+      </button>
+    </div>
+
+    <fieldset class="search-scope-field">
+      <legend>Search in</legend>
+      <div class="search-scope-options">
+        <label class="scope-chip">
+          <input type="radio" name="search-scope" value="all" checked>
+          <span>all</span>
+        </label>
+        <label class="scope-chip scope-chip-blog">
+          <input type="radio" name="search-scope" value="blog">
+          <span>blog</span>
+        </label>
+        <label class="scope-chip scope-chip-note">
+          <input type="radio" name="search-scope" value="raw">
+          <span>note</span>
+        </label>
+      </div>
+    </fieldset>
+  </form>
+
+  <p id="search-stats" class="search-stats" aria-live="polite"></p>
+  <div id="search-results" class="search-results-container">
+    <div class="search-initial-state">
+      <p>Enter keywords above to search the site.</p>
+      <p class="search-tips">Results update as you type. Press <kbd class="search-kbd">/</kbd> anywhere on the site to jump here.</p>
+    </div>
+  </div>
+</div>

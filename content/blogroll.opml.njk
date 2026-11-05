@@ -1,0 +1,18 @@
+---
+permalink: /blogroll/blogroll.opml
+layout: false
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>{{ metadata.title }} Blogroll</title>
+  </head>
+  <body>
+{%- for blog in blogroll | sort(attribute='name') %}
+{%- if blog.feed %}
+    <outline text="{{ blog.name }}" title="{{ blog.name }}" type="rss" htmlUrl="{{ blog.url }}" xmlUrl="{{ blog.feed }}"/>
+{%- endif %}
+{%- endfor %}
+  </body>
+</opml>

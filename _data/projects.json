@@ -1,0 +1,23 @@
+{
+	"projects": [
+		{
+			"title": "Garden Planner",
+			"description": "A tiny web app to plan which vegetables go in which raised bed.",
+			"url": "https://example.com/garden-planner",
+			"status": "active"
+		},
+		{
+			"title": "Recipe Box",
+			"description": "A static site that holds family recipes as Markdown files.",
+			"url": "https://example.com/recipe-box",
+			"status": "stable"
+		},
+		{
+			"title": "Bird Log",
+			"description": "A one-page tracker for birds spotted from the kitchen window.",
+			"url": "https://example.com/bird-log",
+			"status": "active",
+			"type": "mini"
+		}
+	]
+}

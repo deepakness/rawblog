@@ -1,0 +1,17 @@
+{% for month in months %}
+<section class="archive-month-section" id="{{ month.monthKey }}">
+	{#- Use a div, not <header>: site chrome styles target header { display:flex; justify-content:space-between } -#}
+	<div class="archive-month-header">
+		<p class="archive-month-year">{{ month.year }}</p>
+		<h2 class="archive-month-heading">
+			{{ month.monthName }}
+			<span class="archive-month-total">({{ month.totalCount }})</span>
+		</h2>
+	</div>
+	{% set postslist = month.entries %}
+	{% set noReverse = true %}
+	{% set showKindBadge = true %}
+	{% set showTags = true %}
+	{% include "postslist.njk" %}
+</section>
+{% endfor %}

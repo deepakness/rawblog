@@ -1,0 +1,94 @@
+---
+title: "Changelog"
+description: "Notable changes to this website – themes, features, and structure. Not every commit."
+date: 2026-11-01
+image: /img/og/changelog.jpeg
+---
+
+{% set entryCount = changelog | length %}
+
+<h1>{{ title }}</h1>
+
+<p class="now-updated">{{ entryCount }} entries · newest first</p>
+
+<p>How this site has changed over time. Only the stuff that matters to readers – new pages, themes, feeds, search, and the bigger infrastructure moves. For how the site is built, see the <a href="/colophon/">colophon</a>.</p>
+
+<div class="changelog-list">
+{%- for entry in changelog %}
+	<div class="changelog-item">
+		<div class="changelog-top">
+			<span class="changelog-title">{{ entry.title }}</span>
+			<time class="changelog-date" datetime="{{ entry.date }}">{{ entry.date | formatDateAdded }}</time>
+		</div>
+		{%- if entry.description %}
+		<p class="changelog-body">{{ entry.description }}</p>
+		{%- endif %}
+		{%- if entry.links and entry.links.length %}
+		<p class="changelog-links">
+			{%- for link in entry.links %}
+			<a href="{{ link.url }}">{{ link.label }}</a>{% if not loop.last %}<span class="changelog-link-sep" aria-hidden="true"> · </span>{% endif %}
+			{%- endfor %}
+		</p>
+		{%- endif %}
+	</div>
+{%- endfor %}
+</div>
+
+<style>
+	.changelog-list {
+		margin: 2rem 0;
+	}
+
+	.changelog-item {
+		padding: 1rem 0;
+		border-bottom: 1px solid var(--color-gray-20);
+	}
+
+	.changelog-item:last-child {
+		border-bottom: none;
+	}
+
+	.changelog-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+	}
+
+	.changelog-title {
+		font-weight: 600;
+		font-size: 1.05rem;
+	}
+
+	.changelog-date {
+		font-family: var(--font-family-monospace);
+		font-size: 0.85rem;
+		white-space: nowrap;
+		opacity: 0.7;
+	}
+
+	@media (max-width: 40em) {
+		.changelog-top {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.2rem;
+		}
+	}
+
+	.changelog-body {
+		font-size: 0.95rem;
+		margin: 0.35rem 0 0;
+		opacity: 0.85;
+		line-height: 1.55;
+	}
+
+	.changelog-links {
+		font-size: 0.85rem;
+		margin: 0.35rem 0 0;
+		opacity: 0.75;
+	}
+
+	.changelog-link-sep {
+		opacity: 0.6;
+	}
+</style>

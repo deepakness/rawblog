@@ -1,0 +1,31 @@
+<div class="post-share-bar{% if not affiliate %} post-share-bar--ruled{% endif %}">
+  <div class="post-share-actions">
+    <button type="button" class="post-share-link" data-copy-link data-url="{{ metadata.url }}{{ page.url }}" onclick="
+      const url = this.getAttribute('data-url') || window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        this.classList.add('copied');
+        setTimeout(() => { this.classList.remove('copied'); }, 1500);
+      });
+    ">
+      <span class="post-share-icon default-icon" aria-hidden="true">{% phicon "link-simple" %}</span>
+      <span class="post-share-icon check-icon" aria-hidden="true">{% phicon "check" %}</span>
+      <span class="post-share-text">Copy post link</span>
+    </button>
+    <button type="button" class="post-share-link" data-copy-full-md onclick="
+      const template = document.getElementById('post-raw-markdown-template');
+      if (template) {
+        navigator.clipboard.writeText(template.content.textContent.trim()).then(() => {
+          this.classList.add('copied');
+          setTimeout(() => { this.classList.remove('copied'); }, 1500);
+        });
+      }
+    ">
+      <span class="post-share-icon default-icon" aria-hidden="true">{% phicon "article" %}</span>
+      <span class="post-share-icon check-icon" aria-hidden="true">{% phicon "check" %}</span>
+      <span class="post-share-text">Copy post markdown</span>
+    </button>
+  </div>
+</div>
+<template id="post-raw-markdown-template">
+{{ page.inputPath | rawMarkdown(title, page.url) }}
+</template>

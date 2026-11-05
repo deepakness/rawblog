@@ -1,0 +1,29 @@
+---js
+const pagination = {
+	// Paginate only real, non-empty content tags (see contentTagList collection).
+	data: "collections.contentTagList",
+	size: 1,
+	alias: "tag",
+};
+
+const eleventyExcludeFromCollections = true;
+
+const eleventyComputed = {
+	title: "Tagged '{{ tag }}' posts",
+	description: "Discover posts tagged with '{{ tag }}'.",
+	permalink: function(data) {
+		return `/tags/${this.slugify(data.tag)}/`;
+	}
+};
+---
+{% set tagCount = collections[ tag ] | length %}
+<h1>Tagged "{{ tag }}"</h1>
+<p>Explore {{tagCount}} item{{ "s" if tagCount != 1 else "" }} tagged as {{ tag }}.</p>
+{% include "archive-type-key.njk" %}
+
+{% set postslist = collections[ tag ] %}
+{# list sits directly under the page h1, so titles are h2 (no level skip) #}
+{% set postHeadingLevel = 2 %}
+{% include "postslist.njk" %}
+
+<p>See <a href="/tags/">all tags</a>.</p>

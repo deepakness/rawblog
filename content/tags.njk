@@ -1,0 +1,43 @@
+---
+title: "All tags"
+description: "All tags used in blog posts and raw notes."
+image: /img/og/tags.jpeg
+---
+
+<link rel="stylesheet" href="/css/tags.css">
+
+{% set tagDetails = collections | getAllTagsDetails %}
+
+<h1>Tags</h1>
+
+<p>All {{ tagDetails | length }} tags used across blog posts and raw notes.</p>
+
+<div class="tags-controls">
+  <div class="tags-sort-wrapper">
+    <span class="tags-sort-label">Sort by:</span>
+    <div class="tags-sort-buttons" role="tablist" aria-label="Sort tags">
+      <button type="button" class="tags-sort-btn is-active" data-sort="popularity" role="tab" aria-selected="true">Popularity</button>
+      <span class="tags-sort-divider" aria-hidden="true">·</span>
+      <button type="button" class="tags-sort-btn" data-sort="recency" role="tab" aria-selected="false">Recency</button>
+      <span class="tags-sort-divider" aria-hidden="true">·</span>
+      <button type="button" class="tags-sort-btn" data-sort="alphabetical" role="tab" aria-selected="false">Alphabetical</button>
+    </div>
+  </div>
+</div>
+
+<ul class="tags-page-list" id="tags-list">
+{% for tag in tagDetails %}
+	{% set tagUrl %}/tags/{{ tag.name | slugify }}/{% endset %}
+	<li class="tags-page-item"
+        data-name="{{ tag.name | lower | e }}"
+        data-count="{{ tag.count }}"
+        data-latest="{{ tag.latestTimestamp }}">
+        <a href="{{ tagUrl }}" class="tags-page-tag">
+            <span class="tags-page-name">{{ tag.name }}</span>
+            <span class="tags-page-count" title="{{ tag.count }} posts">{{ tag.count }}</span>
+        </a>
+    </li>
+{% endfor %}
+</ul>
+
+<script src="/js/tags.js" defer></script>

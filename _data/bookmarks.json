@@ -1,0 +1,16 @@
+[
+	{
+		"url": "https://www.11ty.dev/docs/",
+		"title": "Eleventy Documentation",
+		"author": "11ty.dev",
+		"dateAdded": "2026-11-02 10:15:00.000+00:00",
+		"note": "The static site generator behind this site"
+	},
+	{
+		"url": "https://indieweb.org/",
+		"title": "IndieWeb",
+		"author": "indieweb.org",
+		"dateAdded": "2026-11-01 08:30:00.000+00:00",
+		"note": "Owning your content on your own domain"
+	}
+]

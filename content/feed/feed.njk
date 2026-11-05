@@ -1,0 +1,16 @@
+---
+permalink: /feed/feed.xml
+eleventyExcludeFromCollections:
+  - posts
+eleventyImport:
+  collections:
+    - posts
+layout: false
+feed:
+  label: "Blog"
+  subtitle: "Long-form posts."
+  path: "/"
+---
+{%- set feedEntries = collections.posts | reverse | head(30) -%}
+{%- set feedUpdated = collections.posts | getNewestCollectionModifiedDate -%}
+{% include "atom-feed.njk" %}

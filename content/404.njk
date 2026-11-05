@@ -1,0 +1,30 @@
+---
+layout: layouts/base.njk
+permalink: /404.html
+eleventyExcludeFromCollections: true
+title: Page not found
+index: noindex, nofollow
+---
+
+<link rel="stylesheet" href="/css/search.css">
+
+<h1>404 – Well, this is awkward</h1>
+
+<p>This page is either lost, hiding, or never existed.</p>
+<p>Kind of like your matching socks.</p>
+
+<h2>What you can do</h2>
+<ol>
+  <li><a href="/">Go home</a> and pretend this never happened.</li>
+  <li>Double-check the URL – typos are sneaky.</li>
+  <li>Search the site below.</li>
+  {%- if metadata.author.email %}
+  <li><a href="mailto:{{ metadata.author.email }}">Email me</a> and I'll fix it.</li>
+  {%- endif %}
+</ol>
+
+<h2 class="search-404-heading">Search the site</h2>
+{% include "search-widget.njk" %}
+
+<script src="/js/search-index.js" defer></script>
+<script src="/js/search.js" defer></script>

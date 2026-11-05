@@ -1,0 +1,86 @@
+{#- Recent year chips + "All years" map. Scales as the archive grows. -#}
+{% set yearNav = archiveYears | archiveYearNav(activeYear, 5) %}
+{% set mapId = "archive-year-map" %}
+
+<nav class="archive-year-nav" aria-labelledby="archive-year-nav-label">
+	<h2 id="archive-year-nav-label" class="archive-section-title">Browse by year</h2>
+
+	<div class="archive-year-rail">
+		{%- if yearNav.pinnedYear %}
+		<a
+			href="/archive/{{ yearNav.pinnedYear.year }}/"
+			class="archive-year-chip is-pinned"
+			aria-current="page"
+		>
+			<span class="archive-year-chip-year">{{ yearNav.pinnedYear.year }}</span>
+			<span class="archive-year-chip-count">{{ yearNav.pinnedYear.totalCount }}</span>
+		</a>
+		<span class="archive-year-rail-sep" aria-hidden="true"></span>
+		{%- endif %}
+
+		{%- for yearGroup in yearNav.recentYears %}
+		<a
+			href="/archive/{{ yearGroup.year }}/"
+			class="archive-year-chip{% if yearGroup.year == activeYear %} is-current{% endif %}"
+			{% if yearGroup.year == activeYear %}aria-current="page"{% endif %}
+		>
+			<span class="archive-year-chip-year">{{ yearGroup.year }}</span>
+			<span class="archive-year-chip-count">{{ yearGroup.totalCount }}</span>
+		</a>
+		{%- endfor %}
+
+		{%- if yearNav.showAllTrigger %}
+		<div class="archive-year-all">
+			<button
+				type="button"
+				class="archive-year-all-btn"
+				id="archive-year-all-btn"
+				popovertarget="{{ mapId }}"
+				aria-controls="{{ mapId }}"
+				aria-expanded="false"
+				aria-haspopup="dialog"
+			>
+				<span class="archive-year-all-btn-label">All years</span>
+				<span class="archive-year-all-btn-meta">{{ yearNav.yearCount }}</span>
+			</button>
+
+			<div
+				id="{{ mapId }}"
+				class="archive-year-map"
+				popover
+				role="dialog"
+				aria-label="All archive years"
+			>
+				<div class="archive-year-map-head">
+					<p class="archive-year-map-title">All years</p>
+					<p class="archive-year-map-sub">{{ yearNav.yearCount }} years in the archive</p>
+				</div>
+
+				<div class="archive-year-map-list">
+					{%- for row in yearNav.mapRows %}
+						{%- if row.type == "decade" %}
+						<p class="archive-year-map-decade" role="presentation">{{ row.label }}</p>
+						{%- else %}
+						<a
+							href="/archive/{{ row.year }}/"
+							class="archive-year-map-row{% if row.isCurrent %} is-current{% endif %}"
+							{% if row.isCurrent %}aria-current="page"{% endif %}
+							data-year="{{ row.year }}"
+						>
+							<span class="archive-year-map-year">{{ row.year }}</span>
+							<span class="archive-year-map-bar" aria-hidden="true">
+								<span
+									class="archive-year-map-bar-fill"
+									style="width: {{ (row.fillRatio * 100) | round }}%"
+								></span>
+							</span>
+							<span class="archive-year-map-count">{{ row.totalCount }}</span>
+						</a>
+						{%- endif %}
+					{%- endfor %}
+				</div>
+			</div>
+		</div>
+		{%- endif %}
+	</div>
+</nav>

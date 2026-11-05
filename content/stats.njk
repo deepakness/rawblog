@@ -1,0 +1,1223 @@
+---
+title: "Stats"
+description: "Every number this site knows about itself – posts, notes, words, GitHub, books, projects, bookmarks. All computed fresh at build time."
+date: 2026-11-01
+image: /img/og/stats.jpeg
+---
+
+{#- All page CSS lives here: this page alone uses these rules, so they do not
+    belong in the shared stylesheet. Everything reads the global theme
+    variables, so the page keeps its look in light, paper, and dark. -#}
+<style>
+  .stats {
+    /* The accent drives every bar, fill and heatmap cell on this page, so the
+       whole thing retints when a theme changes its link color. */
+    --stats-accent: var(--text-color-link);
+    --stats-accent-soft: color-mix(in srgb, var(--text-color-link) 45%, transparent);
+    --stats-accent-faint: color-mix(in srgb, var(--text-color-link) 22%, transparent);
+    --stats-accent-strong: color-mix(in srgb, var(--text-color-link) 72%, transparent);
+    --stats-empty: color-mix(in srgb, var(--text-color-muted) 13%, transparent);
+
+    /* Five-step ramp for the month map. The step count matches the quantile
+       buckets computed in _data/siteStats.js. */
+    --heat-1: color-mix(in srgb, var(--text-color-link) 16%, transparent);
+    --heat-2: color-mix(in srgb, var(--text-color-link) 32%, transparent);
+    --heat-3: color-mix(in srgb, var(--text-color-link) 46%, transparent);
+    --heat-4: color-mix(in srgb, var(--text-color-link) 74%, transparent);
+    --heat-5: var(--text-color-link);
+
+    /* Ink for the fourth step, which lands on a mid-tone blue in every theme
+       and is the one place the two obvious choices both fail. Measured white
+       on light-theme step 4 is 3.13:1, so light needs dark ink; paper's accent
+       is dark enough that it needs light ink; and in the dark theme the ramp
+       runs the other way, so the surface colour is already the dark one. No
+       single token covers all three, so the flip is declared per theme the
+       same way the site declares its own. */
+    --heat-4-ink: var(--text-color);
+  }
+
+  html[data-theme="paper"] .stats,
+  html[data-theme="dark"] .stats {
+    --heat-4-ink: var(--surface-color);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) .stats {
+      --heat-4-ink: var(--surface-color);
+    }
+  }
+
+  /* Anchored headings must clear the sticky header when jumped to. */
+  .stats [id] {
+    scroll-margin-top: 5rem;
+  }
+
+  /* One line under each h2 saying what the section answers, so a number is
+     never presented without its question. */
+  .section-intro {
+    margin: 0.35rem 0 1.1rem;
+    color: var(--text-color-muted);
+  }
+
+  /* ---- Hero ---- */
+
+  /* The page needs one entry point. Everything else is a supporting figure, and
+     the type scale should say so before a single label is read. */
+  .stats-hero {
+    margin: 1.75rem 0 1.5rem;
+  }
+
+  .hero-figure {
+    display: block;
+    font-size: clamp(3.25rem, 13vw, 5.25rem);
+    line-height: 0.92;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    color: var(--text-color-link);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero-label {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: clamp(1.05rem, 3.5vw, 1.3rem);
+    font-weight: 600;
+  }
+
+  .hero-note {
+    margin: 0.7rem 0 0;
+    max-width: 46ch;
+    color: var(--text-color-muted);
+  }
+
+  /* ---- Supporting figures ---- */
+
+  /* Unboxed on purpose: three quiet figures under the hero, separated by a rule
+     rather than three more borders. */
+  .stat-row {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 1.25rem 0 0;
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+    gap: 1.5rem;
+  }
+
+  .stat-row a {
+    display: block;
+    max-width: none;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .stat-row-fig {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-row a:hover .stat-row-fig,
+  .stat-row a:focus-visible .stat-row-fig {
+    color: var(--text-color-link);
+  }
+
+  .stat-row-label {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.88rem;
+    color: var(--text-color-muted);
+  }
+
+  .stat-row-sub {
+    display: block;
+    margin-top: 0.35rem;
+    font-family: var(--font-family-monospace);
+    font-size: 0.72rem;
+    color: var(--text-color-soft);
+  }
+
+  /* ---- Cards (kept for things that are targets) ---- */
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 520px) {
+    .collection-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .stat-card {
+    padding: 1.15rem 1.25rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    /* Each card is a query container, so its contents respond to the width of
+       the card itself rather than to the viewport. The same card is used at
+       three different widths on this page, so a viewport breakpoint would be
+       guessing at all three. */
+    container-type: inline-size;
+  }
+
+  .stat-number {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-color-link);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @container (max-width: 200px) {
+    .stat-number {
+      font-size: 1.45rem;
+    }
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-color-muted);
+  }
+
+  .stat-sub {
+    font-family: var(--font-family-monospace);
+    font-size: 0.72rem;
+    color: var(--text-color-soft);
+  }
+
+  /* A card that is a link keeps the card look but gains affordance: the whole
+     surface is the target, and the label carries the underline on hover. */
+  a.stat-card {
+    text-decoration: none;
+    color: inherit;
+    /* The global `body a { max-width: fit-content }` would shrink each card to
+       its text; a card in a grid has to fill its column. */
+    max-width: none;
+  }
+
+  a.stat-card:hover,
+  a.stat-card:focus-visible {
+    border-color: var(--stats-accent-soft);
+  }
+
+  a.stat-card:hover .stat-label,
+  a.stat-card:focus-visible .stat-label {
+    color: var(--text-color-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ---- Panels (borderless grouping) ---- */
+
+  /* Charts and figure lists are not click targets, so they do not need a boxed
+     surface. A hairline and whitespace group them at a fraction of the visual
+     weight, which leaves the boxed card meaning "this one is a link". */
+  .panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
+    gap: 1.5rem 2.25rem;
+  }
+
+  .panel-grid--stack {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .panel h3 {
+    margin: 0 0 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .figure-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .figure-list li {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 1rem;
+    align-items: baseline;
+  }
+
+  .figure-key {
+    font-family: var(--font-family-monospace);
+    font-size: 0.78rem;
+    color: var(--text-color-soft);
+  }
+
+  .figure-val {
+    font-weight: 600;
+  }
+
+  /* In a full-width panel the key/value list becomes a row of stat columns:
+     label on top, figure underneath. */
+  .panel-grid--stack .figure-list {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1.1rem 1rem;
+  }
+
+  .panel-grid--stack .figure-list li {
+    display: block;
+  }
+
+  .panel-grid--stack .figure-key {
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .panel-grid--stack .figure-val {
+    font-size: 1.05rem;
+  }
+
+  .card-note {
+    margin: 0.85rem 0 0;
+    font-size: 0.78rem;
+    color: var(--text-color-soft);
+    line-height: 1.6;
+  }
+
+  /* ---- Reference tier ---- */
+
+  /* Lookup material rather than narrative: same information, deliberately
+     quieter, so the eye can tell at a glance what is worth reading. */
+  .reference {
+    font-size: 0.9rem;
+  }
+
+  .reference h3 {
+    font-size: 0.88rem;
+    color: var(--text-color-muted);
+    font-weight: 600;
+  }
+
+  /* ---- Writing life map ---- */
+
+  /* The map is a real table: a month is a row-and-column intersection, screen
+     readers get proper headers, and every cell that has entries links to that
+     month on the archive. Colour is a second channel on top of the number, not
+     the only one, so nothing here depends on hovering. */
+  .cal-wrap {
+    overflow-x: auto;
+  }
+
+  /* The global stylesheet sets `table { display: block }` for horizontal
+     scrolling; these two tables do their own scrolling in a wrapper, so they
+     need real table layout back or the columns collapse to content width. */
+  /* Below 40em the global stylesheet gives every table `margin: 0 1rem` and
+     `min-width: 100%`, meant to pair with `.table-wrapper`'s negative margins.
+     These tables use their own wrappers, so they would inherit the side margins
+     without the compensation and overflow their container by 2rem on exactly
+     the screens with the least room. */
+  .cal-table,
+  .stats-table {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .cal-table {
+    display: table;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+    table-layout: fixed;
+  }
+
+  /* The global table rules add a rule line under every th and td; the map draws
+     its own separation with the cell gaps. */
+  .cal-table th,
+  .cal-table td {
+    border: 0;
+  }
+
+  /* Global zebra striping would band the map behind the cells. */
+  .cal-table tbody tr {
+    background: none;
+  }
+
+  .cal-table th {
+    font-family: var(--font-family-monospace);
+    font-weight: 500;
+    font-size: 0.66rem;
+    color: var(--text-color-soft);
+    padding: 0;
+  }
+
+  .cal-table thead th {
+    text-align: center;
+  }
+
+  .cal-table tbody th {
+    text-align: left;
+    font-size: 0.78rem;
+    color: var(--text-color-muted);
+    width: 3rem;
+    white-space: nowrap;
+  }
+
+  .cal-table tbody th a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cal-table tbody th a:hover,
+  .cal-table tbody th a:focus-visible {
+    color: var(--text-color-link);
+    text-decoration: underline;
+  }
+
+  .cal-table td {
+    padding: 0;
+    height: 2.4rem;
+  }
+
+  .cal-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 4px;
+    background: var(--stats-empty);
+    font-family: var(--font-family-monospace);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color-soft);
+    text-decoration: none;
+    max-width: none;
+    /* Keep the map readable on paper: browsers drop background colour by
+       default when printing. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* The two strongest steps invert onto the surface colour rather than a fixed
+     white: the accent is a deep blue in the light themes and a pale one in the
+     dark theme, so a hardcoded white would fail contrast in exactly one. */
+  .cal-cell--c1 { background: var(--heat-1); color: var(--text-color); }
+  .cal-cell--c2 { background: var(--heat-2); color: var(--text-color); }
+  .cal-cell--c3 { background: var(--heat-3); color: var(--text-color); }
+  .cal-cell--c4 { background: var(--heat-4); color: var(--heat-4-ink); }
+  .cal-cell--c5 { background: var(--heat-5); color: var(--surface-color); }
+
+  a.cal-cell:hover,
+  a.cal-cell:focus-visible {
+    outline: 2px solid var(--text-color-link);
+    outline-offset: 1px;
+  }
+
+  .cal-total {
+    font-family: var(--font-family-monospace);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-color-muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    width: 2.6rem;
+  }
+
+  .cal-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 1rem;
+    row-gap: 0.4rem;
+    margin-top: 0.9rem;
+    font-family: var(--font-family-monospace);
+    font-size: 0.7rem;
+    color: var(--text-color-soft);
+  }
+
+  .cal-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .cal-legend b {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .cal-readout {
+    margin: 0.9rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-color-soft);
+  }
+
+  /* Under 560px twelve numerals will not fit at a readable size, so the map
+     drops to colour only and keeps its full width instead of scrolling
+     sideways. Each cell keeps its aria-label, so the counts are still
+     announced, and every month is still a link into the archive. */
+  @media (max-width: 559px) {
+    .cal-wrap {
+      overflow-x: visible;
+    }
+
+    .cal-table {
+      border-spacing: 3px;
+    }
+
+    .cal-num {
+      display: none;
+    }
+
+    .cal-table td {
+      height: 1.6rem;
+    }
+
+    .cal-table tbody th {
+      width: 2.6rem;
+      font-size: 0.68rem;
+      padding-right: 0.3rem;
+    }
+
+    .cal-total {
+      width: 2rem;
+      font-size: 0.68rem;
+    }
+  }
+
+  /* ---- Monthly output bars ---- */
+
+  .month-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 130px;
+  }
+
+  .month-bar {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2px;
+    position: relative;
+  }
+
+  .month-bar-seg {
+    display: block;
+    min-height: 2px;
+    border-radius: 2px 2px 0 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .month-bar-seg--blog { background: var(--stats-accent); }
+  .month-bar-seg--note { background: var(--stats-accent-soft); }
+
+  /* Hidden below 700px: under that width the panels either sit in one column
+     (labels are redundant against the wide bars) or squeeze into the tight
+     two-column band where adjacent labels would touch. */
+  .month-bar-label {
+    display: none;
+  }
+
+  @media (min-width: 700px) {
+    .month-bar-label {
+      display: block;
+      position: absolute;
+      bottom: -1.1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-family-monospace);
+      font-size: 0.6rem;
+      color: var(--text-color-soft);
+    }
+  }
+
+  .bar-caption {
+    margin: 1.5rem 0 0;
+    font-size: 0.82rem;
+    color: var(--text-color-soft);
+  }
+
+  .bar-caption .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 1.25rem;
+  }
+
+  .bar-caption .key b {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .bar-caption .key--blog b { background: var(--stats-accent); }
+  .bar-caption .key--note b { background: var(--stats-accent-soft); }
+
+  /* ---- Horizontal labelled bars (weekdays, hours) ---- */
+
+  .bar-rows {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr 2.2rem;
+    align-items: center;
+    column-gap: 0.6rem;
+  }
+
+  .bar-row-key {
+    font-family: var(--font-family-monospace);
+    font-size: 0.75rem;
+    color: var(--text-color-soft);
+  }
+
+  .bar-row-track {
+    height: 8px;
+    border-radius: 100px;
+    background: var(--stats-empty);
+    overflow: hidden;
+  }
+
+  .bar-row-fill {
+    display: block;
+    height: 100%;
+    border-radius: 100px;
+    background: var(--stats-accent-soft);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .bar-row--peak .bar-row-fill {
+    background: var(--stats-accent);
+  }
+
+  .bar-row-val {
+    font-family: var(--font-family-monospace);
+    font-size: 0.75rem;
+    color: var(--text-color-soft);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Tags ---- */
+
+  /* Twenty stacked full-width bars made the page's longest, most monotonous
+     stretch. The same information fits in a few rows as chips: each one is the
+     link to its tag page, carries its count, and fills from the left in
+     proportion to that count, so the ranking is still readable at a glance. */
+  .tag-chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(170px, 100%), 1fr));
+    gap: 0.5rem;
+  }
+
+  .tag-chip {
+    --fill: 0%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    max-width: none;
+    text-decoration: none;
+    color: inherit;
+    background:
+      linear-gradient(to right, var(--stats-accent-faint) var(--fill), transparent var(--fill)),
+      var(--surface-color);
+  }
+
+  .tag-chip:hover,
+  .tag-chip:focus-visible {
+    border-color: var(--stats-accent-soft);
+  }
+
+  .tag-chip-name {
+    font-size: 0.88rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tag-chip:hover .tag-chip-name,
+  .tag-chip:focus-visible .tag-chip-name {
+    color: var(--text-color-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .tag-chip-count {
+    font-family: var(--font-family-monospace);
+    font-size: 0.75rem;
+    color: var(--text-color-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- GitHub ---- */
+
+  .gh-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 520px) {
+    .gh-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .gh-chart-card {
+    grid-column: 1 / -1;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-color);
+  }
+
+  .gh-chart-card p {
+    margin: 0 0 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-color-muted);
+  }
+
+  /* Real bars rather than Unicode blocks: same visual language as every other
+     chart on the page, and each week keeps its own tooltip. */
+  .gh-weeks {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 70px;
+  }
+
+  .gh-week {
+    flex: 1;
+    min-width: 0;
+    border-radius: 2px 2px 0 0;
+    background: var(--stats-accent-soft);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .gh-axis {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-family-monospace);
+    font-size: 0.68rem;
+    color: var(--text-color-soft);
+    margin-top: 0.45rem;
+  }
+
+  /* Fallback when a cached snapshot predates the weekly series. */
+  .gh-spark {
+    display: block;
+    font-family: var(--font-family-monospace);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    color: var(--text-color-link);
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  /* ---- Tables ---- */
+
+  /* Scroll shadows: the two `local` layers paint the page background over the
+     shadows at rest, and the `scroll` layers stay pinned to the edges, so a
+     shadow appears only on the side that has more content off-screen. Without
+     this a clipped column looks like the table simply ends. */
+  .stats-table-wrap {
+    overflow-x: auto;
+    background:
+      linear-gradient(to right, var(--background-color) 30%, transparent) left center / 3rem 100% no-repeat local,
+      linear-gradient(to left, var(--background-color) 30%, transparent) right center / 3rem 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.16), transparent) left center / 1rem 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.16), transparent) right center / 1rem 100% no-repeat scroll;
+    overscroll-behavior-x: contain;
+  }
+
+  .stats-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stats-table th,
+  .stats-table td {
+    padding: 0.55rem 0.85rem;
+    text-align: right;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .stats-table thead th {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-color-soft);
+    border-bottom: 1px solid var(--border-color-strong);
+  }
+
+  .stats-table tbody th {
+    text-align: left;
+    font-family: var(--font-family-monospace);
+    font-weight: 600;
+    color: var(--text-color-muted);
+  }
+
+  .stats-table tbody tr:nth-child(even) {
+    background: var(--table-row-even);
+  }
+
+  /* The share column is the row's own volume against the biggest year, split
+     into posts and notes – it replaces a year-on-year percentage that read as
+     a collapse whenever a format was simply introduced or retired. */
+  .stats-table .col-share {
+    width: 30%;
+    min-width: 90px;
+  }
+
+  .share-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 100px;
+    overflow: hidden;
+    background: var(--stats-empty);
+  }
+
+  /* A year with a handful of entries still gets a visible sliver rather than
+     rounding away to an empty track. */
+  .share-bar span {
+    height: 100%;
+    min-width: 3px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .share-bar .share-blog { background: var(--stats-accent); }
+  .share-bar .share-note { background: var(--stats-accent-soft); }
+
+  /* On a phone the two widest columns go rather than making a six-column table
+     scroll sideways. Words and share are the reference detail; the counts are
+     the point. */
+  @media (max-width: 559px) {
+    .stats-table .col-words,
+    .stats-table .col-share {
+      display: none;
+    }
+
+    .stats-table th,
+    .stats-table td {
+      padding: 0.5rem 0.5rem;
+    }
+  }
+
+  .stats-empty-note {
+    margin: 0;
+    color: var(--text-color-soft);
+    font-size: 0.9rem;
+  }
+
+  .stats-table-note {
+    margin: 0.75rem 0 0;
+    font-size: 0.82rem;
+    color: var(--text-color-soft);
+  }
+
+  .stats-footer-note {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.88rem;
+    color: var(--text-color-soft);
+  }
+
+  @media (max-width: 520px) {
+    .month-bars {
+      gap: 4px;
+    }
+  }
+
+  /* ---- Print ---- */
+
+  @media print {
+    .stats-hero {
+      margin-top: 0;
+    }
+
+    /* Nothing on paper is clickable, so the accent stops carrying meaning. */
+    .hero-figure,
+    .stat-number {
+      color: inherit;
+    }
+
+    .panel,
+    .stat-card,
+    .gh-chart-card,
+    .cal-wrap,
+    .stats-table-wrap {
+      break-inside: avoid;
+    }
+
+    .stat-card,
+    .gh-chart-card,
+    .tag-chip {
+      background: none;
+    }
+
+    .stats-table-wrap {
+      overflow: visible;
+      background: none;
+    }
+  }
+</style>
+
+<div class="stats">
+	<h1>{{ title }}</h1>
+
+	<p>Everything this site knows about itself, recounted from the source files on every build.</p>
+
+	{#- Aggregates used in more than one place below (books, projects, blogroll feeds). -#}
+	{% set booksDone = 0 %}{% set booksReading = 0 %}{% set booksPlanned = 0 %}
+	{% for b in books %}{% if b.status == "completed" %}{% set booksDone = booksDone + 1 %}{% elif b.status == "reading" %}{% set booksReading = booksReading + 1 %}{% else %}{% set booksPlanned = booksPlanned + 1 %}{% endif %}{% endfor %}
+	{% set projActive = 0 %}{% set projStable = 0 %}{% set projOther = 0 %}{% set projMini = 0 %}
+	{% for p in projects.projects %}{% if p.type == 'mini' %}{% set projMini = projMini + 1 %}{% elif p.status == 'active' %}{% set projActive = projActive + 1 %}{% elif p.status == 'stable' %}{% set projStable = projStable + 1 %}{% else %}{% set projOther = projOther + 1 %}{% endif %}{% endfor %}
+	{% set blogrollFeeds = 0 %}{% for b in blogroll %}{% if b.feed %}{% set blogrollFeeds = blogrollFeeds + 1 %}{% endif %}{% endfor %}
+	{% set yearsWriting = (siteStats.daysSinceFirst / 365.25) | round(1) %}
+	{% set ytd = siteStats.yearToDate %}
+
+	<div class="stats-hero">
+		<span class="hero-figure">{{ siteStats.totals.wordsAll | toLocaleString }}</span>
+		<span class="hero-label">words published</span>
+		<p class="hero-note">Across <a href="/archive/">{{ siteStats.totals.entries }} posts and notes</a> written over {{ yearsWriting }} years, starting {{ siteStats.first.date }}, plus {{ siteStats.totals.pageCount }} standalone pages. That is {{ siteStats.readingLabel }} of reading.</p>
+	</div>
+
+	<ul class="stat-row">
+		<li>
+			<span class="stat-row-fig">{{ ytd.entries }}</span>
+			<span class="stat-row-label">entries so far in {{ ytd.year }}</span>
+			<span class="stat-row-sub">{{ ytd.lastYearEntries }} by this date in {{ ytd.lastYear }}</span>
+		</li>
+		<li>
+			{#- Early in a new year there are not yet two entries to measure a pace
+			    from, so the figure falls back to the all-time one rather than
+			    rendering blank. -#}
+			{% if ytd.pace %}
+			<span class="stat-row-fig">{{ ytd.pace }}</span>
+			<span class="stat-row-label">days between entries this year</span>
+			<span class="stat-row-sub">{{ siteStats.avgDaysBetween }} across the whole run</span>
+			{% else %}
+			<span class="stat-row-fig">{{ siteStats.avgDaysBetween }}</span>
+			<span class="stat-row-label">days between entries</span>
+			<span class="stat-row-sub">across the whole run</span>
+			{% endif %}
+		</li>
+		<li>
+			{#- An absolute date rather than "today" or "3 days ago". The site only
+			    rebuilds when something is published, so a relative phrase is frozen
+			    at the moment of the last build and quietly becomes wrong the next
+			    day. A date stays true however long the gap runs. -#}
+			<a href="{{ siteStats.latest.url }}">
+				<span class="stat-row-fig">{{ siteStats.latest.dateShort }}</span>
+				<span class="stat-row-label">last published</span>
+				<span class="stat-row-sub">{{ siteStats.latest.title }}</span>
+			</a>
+		</li>
+	</ul>
+
+	<h2 id="output">Output over time</h2>
+	<p class="section-intro">Posts are the long-form pieces; notes are the short ones.</p>
+
+	<h3>Every month since the beginning</h3>
+	<p>Shaded by how busy each month was. Pick any month to open it in the archive.</p>
+	<div class="cal-wrap" data-table-wrap>
+		<table class="cal-table">
+			<caption class="visually-hidden">Entries published in each month, by year, newest year first.</caption>
+			<thead>
+				<tr>
+					<th scope="col"><span class="visually-hidden">Year</span></th>
+					{% for label in ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] %}
+					<th scope="col"><span aria-hidden="true">{{ label[0] }}</span><span class="visually-hidden">{{ label }}</span></th>
+					{% endfor %}
+					<th scope="col"><span class="visually-hidden">Year total</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for y in siteStats.calendar %}
+				<tr>
+					{#- A year with no entries has no archive page generated for it, so
+					    the label is only a link when there is something to open. -#}
+					<th scope="row">{% if y.totalCount %}<a href="/archive/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}</th>
+					{% for m in y.months %}
+					<td>
+						{%- if m.count == 0 -%}
+						<span class="cal-cell" aria-label="{{ m.short }} {{ y.year }}: nothing"><span class="cal-num">·</span></span>
+						{%- else -%}
+						<a class="cal-cell cal-cell--c{{ m.level }}" href="{{ m.anchor }}" aria-label="{{ m.short }} {{ y.year }}: {{ m.count }} entr{{ 'y' if m.count == 1 else 'ies' }}"><span class="cal-num">{{ m.count }}</span></a>
+						{%- endif -%}
+					</td>
+					{% endfor %}
+					<td class="cal-total">{{ y.totalCount }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="cal-legend" aria-hidden="true">
+		<span>entries per month:</span>
+		<span><b style="background: var(--stats-empty)"></b>0</span>
+		{% for step in siteStats.heatLegend %}<span><b style="background: var(--heat-{{ step.level }})"></b>{{ step.label }}</span>{% endfor %}
+	</div>
+	<p class="cal-readout">The busiest single month was {{ siteStats.busiestMonth }}, and the current run is {{ siteStats.streaks.current }} months without a gap. Shading steps are quintiles of the months that have entries, so the colour splits where the data actually sits.</p>
+
+	<h3>Year by year</h3>
+	<div class="reference">
+		<div class="stats-table-wrap" data-table-wrap>
+			<table class="stats-table">
+				<thead>
+					<tr>
+						<th scope="col">Year</th>
+						<th scope="col">Posts</th>
+						<th scope="col">Notes</th>
+						<th scope="col">Total</th>
+						<th scope="col" class="col-words">Words</th>
+						<th scope="col" class="col-share">Share of biggest year</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for y in siteStats.yearRows %}
+					<tr>
+						<th scope="row">{{ y.year }}</th>
+						<td>{{ y.blog }}</td>
+						<td>{{ y.note }}</td>
+						<td>{{ y.total }}</td>
+						<td class="col-words">{{ y.words | toLocaleString }}</td>
+						<td class="col-share">
+							<div class="share-bar" role="img" aria-label="{{ y.blog }} posts and {{ y.note }} notes">
+								{% if y.blog > 0 %}<span class="share-blog" style="width: {{ y.barBlog }}%"></span>{% endif %}
+								{% if y.note > 0 %}<span class="share-note" style="width: {{ y.barNote }}%"></span>{% endif %}
+							</div>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<p class="stats-table-note">Bars compare each year against the biggest one, split into posts and notes.{% if siteStats.bestYear %} The biggest complete year so far is {{ siteStats.bestYear.year }}, with {{ siteStats.bestYear.total }} entries.{% endif %} {{ ytd.year }} is still in progress.</p>
+	</div>
+
+	<h2 id="rhythm">Writing rhythm</h2>
+	<p class="section-intro">Not how much, but when – the pace it keeps and the days and hours things actually get published.</p>
+	<div class="panel-grid">
+		<div class="panel">
+			<h3>Pace and streak</h3>
+			<ul class="figure-list">
+				<li><span class="figure-key">current streak</span><span class="figure-val">{{ siteStats.streaks.current }} months</span></li>
+				<li><span class="figure-key">longest streak</span><span class="figure-val">{{ siteStats.streaks.longest }} months</span></li>
+				<li><span class="figure-key">busiest month</span><span class="figure-val">{{ siteStats.busiestMonth }}</span></li>
+				<li><span class="figure-key">longest silence</span><span class="figure-val">{{ siteStats.gaps.longestDays }} days</span></li>
+				<li><span class="figure-key">first post</span><span class="figure-val">{{ siteStats.first.date }}</span></li>
+			</ul>
+			<p class="card-note">A streak counts consecutive months with at least one entry.</p>
+		</div>
+		<div class="panel">
+			<h3>This year so far ({{ siteStats.calendar[0].year }})</h3>
+			{% set yr = siteStats.calendar[0] %}
+			{#- The two segments stack, so the scale is the biggest monthly total –
+			    scaling each segment against its own maximum would let a bar run
+			    past the top of the chart. -#}
+			{% set chartMax = 1 %}
+			{% for m in yr.months %}{% if m.count > chartMax %}{% set chartMax = m.count %}{% endif %}{% endfor %}
+			<div class="month-bars" role="img" aria-label="Posts and notes per month in {{ yr.year }}: {{ yr.totalCount }} total">
+				{% for m in yr.months %}
+				<div class="month-bar" title="{{ m.short }} {{ yr.year }} · {{ m.blog }} post{{ '' if m.blog == 1 else 's' }}, {{ m.note }} note{{ '' if m.note == 1 else 's' }}">
+					{% if m.blog > 0 %}<span class="month-bar-seg month-bar-seg--blog" style="height: {{ (m.blog / chartMax * 100) | round(0) }}%"></span>{% endif %}
+					{% if m.note > 0 %}<span class="month-bar-seg month-bar-seg--note" style="height: {{ (m.note / chartMax * 100) | round(0) }}%"></span>{% endif %}
+					<span class="month-bar-label" aria-hidden="true">{{ m.short }}</span>
+				</div>
+				{% endfor %}
+			</div>
+			<p class="bar-caption">
+				<span class="key key--blog"><b></b>posts</span>
+				<span class="key key--note"><b></b>notes</span>
+			</p>
+			<p class="card-note">{{ yr.totalCount }} entries so far this year. Bars are stacked and scaled to the busiest month of the year, at {{ chartMax }}.</p>
+		</div>
+		<div class="panel">
+			<h3>Day of the week</h3>
+			{% set peakWeekday = siteStats.weekdays[0] %}
+			<div class="bar-rows">
+				{% for d in siteStats.weekdayBars %}
+				<div class="bar-row{{ ' bar-row--peak' if d.count == peakWeekday.count }}">
+					<span class="bar-row-key">{{ d.label }}</span>
+					<span class="bar-row-track"><span class="bar-row-fill" style="width: {{ d.pct }}%"></span></span>
+					<span class="bar-row-val">{{ d.count }}</span>
+				</div>
+				{% endfor %}
+			</div>
+			<p class="card-note">{{ peakWeekday.count }} entries went out on {{ peakWeekday.label }}, more than any other day.</p>
+		</div>
+		<div class="panel reference">
+			<h3>Time of day</h3>
+			<div class="bar-rows">
+				{% set maxHourCount = 0 %}
+				{% for h in siteStats.hourBars %}{% if h.count > maxHourCount %}{% set maxHourCount = h.count %}{% endif %}{% endfor %}
+				{% for h in siteStats.hourBars %}
+				<div class="bar-row{{ ' bar-row--peak' if h.count == maxHourCount }}">
+					<span class="bar-row-key">{{ h.label }}</span>
+					<span class="bar-row-track"><span class="bar-row-fill" style="width: {{ h.pct }}%"></span></span>
+					<span class="bar-row-val">{{ h.count }}</span>
+				</div>
+				{% endfor %}
+			</div>
+			<p class="card-note">Publish times in {{ metadata.timezone }}, grouped into four-hour bands. The three busiest hours are {{ siteStats.topHours | join(", ") }}.</p>
+		</div>
+	</div>
+
+	<h2 id="inside">Inside the writing</h2>
+	<p class="section-intro">What the {{ siteStats.totals.entries | toLocaleString }} entries are actually made of.</p>
+	<div class="panel-grid panel-grid--stack">
+		<div class="panel">
+			<h3>Typical lengths</h3>
+			<ul class="figure-list">
+				<li><span class="figure-key">median entry</span><span class="figure-val">{{ siteStats.extremes.medianWords | toLocaleString }} words</span></li>
+				<li><span class="figure-key">average post</span><span class="figure-val">{{ siteStats.averages.wordsPerPost | toLocaleString }} words</span></li>
+				<li><span class="figure-key">average note</span><span class="figure-val">{{ siteStats.averages.wordsPerNote | toLocaleString }} words</span></li>
+				<li><span class="figure-key">posts + notes</span><span class="figure-val">{{ siteStats.totals.wordsTotal | toLocaleString }} words</span></li>
+			</ul>
+			<p class="card-note">The range runs from <a href="{{ siteStats.extremes.shortest.url }}">{{ siteStats.extremes.shortest.title }}</a> at {{ siteStats.extremes.shortest.words }} words to <a href="{{ siteStats.extremes.longest.url }}">{{ siteStats.extremes.longest.title }}</a> at {{ siteStats.extremes.longest.words | toLocaleString }}. This panel is posts and notes only, and quotes each entry the way its own page does. The headline total of {{ siteStats.totals.wordsAll | toLocaleString }} words also counts standalone pages, build-log entries, and image alt text, which is written but never rendered – so per-post figures do not add up to it exactly.</p>
+		</div>
+		<div class="panel">
+			<h3>What is embedded</h3>
+			<ul class="figure-list">
+				<li><span class="figure-key">images</span><span class="figure-val">{{ siteStats.totals.images | toLocaleString }}</span></li>
+				<li><span class="figure-key">code blocks</span><span class="figure-val">{{ siteStats.totals.codeBlocks }}</span></li>
+				<li><span class="figure-key">lines of code</span><span class="figure-val">{{ siteStats.totals.codeLines | toLocaleString }}</span></li>
+				<li><span class="figure-key">self-hosted videos</span><span class="figure-val">{{ siteStats.totals.videoPosts }}</span></li>
+			</ul>
+			<p class="card-note">Images appear in {{ siteStats.totals.postsWithImages }} entries and code in {{ siteStats.totals.postsWithCode }}, roughly {{ siteStats.averages.codeSharePct }}% of everything published here.</p>
+		</div>
+		<div class="panel reference">
+			<h3>Upkeep and reach</h3>
+			<ul class="figure-list">
+				<li><span class="figure-key">revised entries</span><span class="figure-val">{{ siteStats.freshness.updatedCount }}</span></li>
+				<li><span class="figure-key">revised after</span><span class="figure-val">{{ siteStats.freshness.avgDaysToUpdate }} days</span></li>
+				<li><span class="figure-key">on Mastodon</span><span class="figure-val">{{ siteStats.totals.mastodonPosts }}</span></li>
+				<li><span class="figure-key">tags per entry</span><span class="figure-val">{{ siteStats.tags.avgPerEntry }}</span></li>
+			</ul>
+			<p class="card-note">Revised entries carry an updated date, shown on the post itself. The revision figure is an average across those {{ siteStats.freshness.updatedCount }} entries.</p>
+		</div>
+	</div>
+
+	<h2 id="tags">Tags</h2>
+	{% set topTags = collections | getAllTagsDetails | head(24) %}
+	<p class="section-intro">{{ siteStats.tags.distinct }} tags are in use and {{ siteStats.tags.singleUse }} of them appear exactly once. These are the {{ topTags | length }} biggest, sized by how often each is used.</p>
+	{% set maxTag = topTags[0].count if topTags | length else 1 %}
+	{% set shownTotal = 0 %}
+	{% for tag in topTags %}{% set shownTotal = shownTotal + tag.count %}{% endfor %}
+	{#- Chips rather than a stack of full-width bars: each one fills from the left
+	    in proportion to its count, so the ranking still reads at a glance in a
+	    fifth of the height. -#}
+	<div class="tag-chips">
+		{% for tag in topTags %}
+		<a class="tag-chip" href="/tags/{{ tag.name | slugify }}/" style="--fill: {{ (tag.count / maxTag * 100) | round(1) }}%">
+			<span class="tag-chip-name">{{ tag.name }}</span>
+			<span class="tag-chip-count">{{ tag.count }}</span>
+		</a>
+		{% endfor %}
+	</div>
+	<p class="stats-table-note">{% if siteStats.tags.assignments %}The {{ topTags | length }} tags above account for {{ (shownTotal / siteStats.tags.assignments * 100) | round(0) }}% of all tag uses. {% endif %}<a href="/tags/">Browse all {{ siteStats.tags.distinct }} tags</a>.</p>
+
+	{%- if metadata.githubUsername %}
+	<h2 id="github">GitHub</h2>
+	{%- if githubActivity %}
+	<p class="section-intro">The other half of the output: code pushed over the last {{ githubActivity.totalDays }} days.</p>
+	<div class="gh-grid">
+		<div class="stat-card">
+			<span class="stat-number">{{ githubActivity.total | toLocaleString }}</span>
+			<span class="stat-label">total contributions</span>
+			{% if githubActivity.avgPerActiveDay %}<span class="stat-sub">{{ githubActivity.avgPerActiveDay }} per active day</span>{% endif %}
+		</div>
+		<div class="stat-card">
+			<span class="stat-number">{{ githubActivity.activeDays }}</span>
+			<span class="stat-label">active days</span>
+			<span class="stat-sub">of {{ githubActivity.totalDays }} days</span>
+		</div>
+		<div class="stat-card">
+			<span class="stat-number">{{ githubActivity.currentStreak }}</span>
+			<span class="stat-label">current streak (days)</span>
+			<span class="stat-sub">best {{ githubActivity.bestStreak }}</span>
+		</div>
+		<div class="stat-card">
+			<span class="stat-number">{{ githubActivity.busiestCount }}</span>
+			<span class="stat-label">busiest day</span>
+			<span class="stat-sub">{{ githubActivity.busiestLabel or githubActivity.busiestDate }}</span>
+		</div>
+		<div class="gh-chart-card">
+			<p>Contributions per week, scaled against the busiest week.</p>
+			{%- if githubActivity.weekBars %}
+			<div class="gh-weeks" role="img" aria-label="Weekly GitHub contributions from {{ githubActivity.startLabel }} to {{ githubActivity.endLabel }}, {{ githubActivity.total }} in total">
+				{% for w in githubActivity.weekBars %}<span class="gh-week" style="height: {{ w.pct }}%" title="Week of {{ w.label }} · {{ w.total }} contribution{{ '' if w.total == 1 else 's' }}"></span>{% endfor %}
+			</div>
+			{%- else %}
+			<span class="gh-spark" aria-hidden="true">{{ githubActivity.sparkline }}</span>
+			{%- endif %}
+			<span class="gh-axis"><span>{{ githubActivity.startLabel }}</span><span>{{ githubActivity.endLabel }}</span></span>
+		</div>
+	</div>
+	{%- else %}
+	<p class="stats-empty-note">GitHub stats were unavailable on this build – the page falls back to a cached snapshot, so try again later.</p>
+	{%- endif %}
+
+	{%- endif %}
+
+	<h2 id="collections">Collections</h2>
+	<p class="section-intro">Everything else the site keeps a list of. Each card opens its page.</p>
+	<div class="collection-grid">
+		<a class="stat-card" href="/books/">
+			<span class="stat-number">{{ books | length }}</span>
+			<span class="stat-label">books</span>
+			<span class="stat-sub">{{ booksDone }} read · {{ booksReading }} reading · {{ booksPlanned }} planned</span>
+		</a>
+		<a class="stat-card" href="/projects/">
+			<span class="stat-number">{{ projects.projects | length }}</span>
+			<span class="stat-label">projects</span>
+			<span class="stat-sub">{{ projActive }} active · {{ projStable }} stable · {{ projMini }} mini</span>
+		</a>
+		<a class="stat-card" href="/blogroll/">
+			<span class="stat-number">{{ blogroll | length }}</span>
+			<span class="stat-label">blogs in the blogroll</span>
+			<span class="stat-sub">{{ blogrollFeeds }} with a public feed</span>
+		</a>
+		<a class="stat-card" href="/bookmarks/">
+			<span class="stat-number">{{ bookmarks | length }}</span>
+			<span class="stat-label">bookmarks</span>
+			<span class="stat-sub">links kept for later</span>
+		</a>
+		<a class="stat-card" href="/changelog/">
+			<span class="stat-number">{{ changelog | length }}</span>
+			<span class="stat-label">site changes logged</span>
+			<span class="stat-sub">every notable change to this site</span>
+		</a>
+	</div>
+
+	<p class="stats-footer-note">Counted on {{ siteStats.builtOn }}, the last time the site was built. Anything measured against "this year" or "to date" is as of then. Every figure comes from the source files, not from analytics. See <a href="/colophon/">how this site is built</a>.</p>
+</div>

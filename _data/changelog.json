@@ -1,0 +1,13 @@
+[
+	{
+		"date": "2026-11-01",
+		"title": "Site launched",
+		"description": "First version of the site, with a blog, raw notes, tags, search, and feeds.",
+		"links": [
+			{
+				"label": "home",
+				"url": "/"
+			}
+		]
+	}
+]

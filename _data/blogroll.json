@@ -1,0 +1,11 @@
+[
+	{
+		"name": "Eleventy Blog",
+		"url": "https://www.11ty.dev/blog/",
+		"feed": "https://www.11ty.dev/blog/feed.xml"
+	},
+	{
+		"name": "Example Blog",
+		"url": "https://example.org/"
+	}
+]

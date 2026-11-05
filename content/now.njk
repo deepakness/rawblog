@@ -1,0 +1,54 @@
+---
+title: "Now"
+description: "What I'm doing now."
+date: 2026-11-01
+image: /img/og/now.jpeg
+---
+
+<h1>What I'm doing now</h1>
+
+<p class="now-updated">Last updated: <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time></p>
+
+<p>This is a <a href="https://nownownow.com/about">now page</a>, a snapshot of what I'm focused on at the moment. Update the date in the frontmatter whenever you change it.</p>
+
+<h2>Current focus</h2>
+<ul>
+    <li>Planting a small vegetable garden</li>
+    <li>Learning to bake sourdough</li>
+    <li>Writing here at least once a week</li>
+</ul>
+
+<p>You can also check my latest projects <a href="/projects/">on this page</a>.</p>
+
+<h2>Currently reading</h2>
+<ul>
+    {%- for book in books -%}
+        {% if book.status === "reading" %}
+            <li>{{ book.title }} <span style="font-size: 80%; font-family: var(--font-family-monospace);">by {{ book.author }}</span></li>
+        {% endif %}
+    {%- endfor -%}
+</ul>
+
+{%- set recentWriting = collections.archiveFeed | head(3) -%}
+{%- if recentWriting.length %}
+<h2>Latest writings</h2>
+<ul class="now-recent-list">
+{%- for entry in recentWriting %}
+	{% set isNote = entry.inputPath and ("content/raw/" in entry.inputPath) %}
+	<li class="now-recent-item">
+		<a href="{{ entry.url }}">{% if entry.data.title %}{{ entry.data.title }}{% else %}<code>{{ entry.url }}</code>{% endif %}</a>
+		<ul class="post-metadata home-feed-metadata">
+			<li class="now-recent-kind">
+				{% if isNote %}
+				<span class="entry-kind entry-kind-note" title="note" aria-label="note"></span>
+				{% else %}
+				<span class="entry-kind entry-kind-blog" title="blog" aria-label="blog"></span>
+				{% endif %}
+				<time datetime="{{ entry.date | htmlDateString }}">{{ entry.date | readableDatetime }}</time>
+			</li>
+		</ul>
+	</li>
+{%- endfor %}
+</ul>
+<p>You can find <a href="/archive/">more in the archive</a>.</p>
+{%- endif %}

@@ -1,0 +1,56 @@
+{#-
+  Keep reading block for post/note footers.
+  Expects: tagsList (filtered), page, collections
+  Related entries are scored once per build in _config/related.js and looked up
+  here by URL; pin specific entries with a `related:` list in frontmatter.
+
+  Each related row always gets an entry-kind circle (blog / note).
+  Immediately after the "Keep reading" heading: a compact legend showing only
+  the types present in related – ● blog, ○ note, or both with a slash.
+-#}
+{%- set related = collections.related[page.url] or [] %}
+{%- set relatedKinds = related | entryKindsInList %}
+{%- if related.length %}
+<aside class="keep-reading" aria-labelledby="keep-reading-heading">
+  <div class="keep-reading-header">
+    <h2 id="keep-reading-heading" class="keep-reading-label">Keep reading</h2>
+    {%- if relatedKinds.blog or relatedKinds.note %}
+    <p class="keep-reading-legend"{%- if relatedKinds.blog and relatedKinds.note %} aria-label="Entry types: green filled circle is blog, red hollow circle is note"{%- elif relatedKinds.blog %} aria-label="Entry type: green filled circle is blog"{%- else %} aria-label="Entry type: red hollow circle is note"{%- endif %}>
+      {%- if relatedKinds.blog %}
+      <span class="keep-reading-legend-item">
+        <span class="entry-kind entry-kind-blog" aria-hidden="true"></span>
+        <span class="keep-reading-legend-label">blog</span>
+      </span>
+      {%- endif %}
+      {%- if relatedKinds.blog and relatedKinds.note %}
+      <span class="keep-reading-legend-sep" aria-hidden="true">/</span>
+      {%- endif %}
+      {%- if relatedKinds.note %}
+      <span class="keep-reading-legend-item">
+        <span class="entry-kind entry-kind-note" aria-hidden="true"></span>
+        <span class="keep-reading-legend-label">note</span>
+      </span>
+      {%- endif %}
+    </p>
+    {%- endif %}
+  </div>
+  <ul class="keep-reading-list">
+    {%- for item in related %}
+    {%- set itemIsNote = item | isRawNote %}
+    <li>
+      <a class="keep-reading-link" href="{{ item.url }}">
+        <span class="keep-reading-title">{{ item.data.title }}</span>
+        <span class="keep-reading-meta">
+          {%- if itemIsNote %}
+          <span class="entry-kind entry-kind-note" title="note" aria-label="note"></span>
+          {%- else %}
+          <span class="entry-kind entry-kind-blog" title="blog" aria-label="blog"></span>
+          {%- endif %}
+          <time datetime="{{ item.date | htmlDateString }}">{{ item.date | readableDatetime }}</time>
+        </span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+</aside>
+{%- endif %}

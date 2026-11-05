@@ -1,0 +1,35 @@
+{#- Shared Atom feed. Callers set `feed` (label, subtitle, path) in frontmatter
+    and `feedEntries` / `feedUpdated` before including this. -#}
+{%- set feedBase = metadata.url ~ feed.path -%}
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="pretty-atom-feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ metadata.language }}">
+  <title>{{ metadata.title }} - {{ feed.label }}</title>
+  <subtitle>{{ feed.subtitle }}</subtitle>
+  <link href="{{ permalink | htmlBaseUrl(feedBase) }}" rel="self" />
+  <link href="{{ feedBase | addPathPrefixToFullUrl }}" />
+  <updated>{{ feedUpdated | dateToRfc3339 }}</updated>
+  <id>{{ feedBase | addPathPrefixToFullUrl }}</id>
+  <icon>{{ metadata.author.avatar | htmlBaseUrl(metadata.url) }}</icon>
+  <logo>{{ metadata.author.avatar | htmlBaseUrl(metadata.url) }}</logo>
+  <author>
+    <name>{{ metadata.author.name }}</name>
+  </author>
+  {%- for post in feedEntries %}
+  {%- set absolutePostUrl %}{{ post.url | htmlBaseUrl(feedBase) }}{% endset %}
+  {%- set entryUpdated = post.data.updated or post.date -%}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="{{ absolutePostUrl }}" />
+    <updated>{{ entryUpdated | dateToRfc3339 }}</updated>
+    {%- if post.data.updated %}
+    <published>{{ post.date | dateToRfc3339 }}</published>
+    {%- endif %}
+    <id>{{ absolutePostUrl }}</id>
+    {%- if post.data.description %}
+    <summary>{{ post.data.description }}</summary>
+    {%- endif %}
+    <content type="html">{{ post.content | renderTransforms(post.data.page, feedBase) }}</content>
+  </entry>
+  {%- endfor %}
+</feed>

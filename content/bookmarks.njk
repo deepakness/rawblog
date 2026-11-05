@@ -1,0 +1,69 @@
+---
+title: "Bookmarks"
+description: "Links to articles, videos, papers, and other things I found worth saving."
+date: 2026-11-01
+image: /img/og/bookmarks.jpeg
+---
+
+<link rel="stylesheet" href="/css/bookmarks.css">
+
+{% set sortedBookmarks = bookmarks | sortBookmarksByDate %}
+
+<h1>{{ sortedBookmarks | length }} bookmarks</h1>
+
+<p>Things I found on the internet worth saving.</p>
+
+{%- if sortedBookmarks | length > 0 %}
+
+<link rel="preload" href="/bookmarks-index.json" as="fetch">
+
+<div class="bookmarks-controls">
+  <form id="bookmarks-form" class="bookmarks-form" role="search">
+    <input
+      type="search"
+      id="bookmarks-input"
+      class="bookmarks-input"
+      placeholder="Search bookmarks…"
+      aria-label="Search bookmarks"
+      autocomplete="off"
+    >
+  </form>
+  <p id="bookmarks-stats" class="bookmarks-stats" aria-live="polite">Showing {{ sortedBookmarks | length }} of {{ sortedBookmarks | length }}</p>
+</div>
+
+<ol class="bookmark-list" id="bookmark-list" aria-busy="false">
+{%- for bookmark in sortedBookmarks %}
+  <li
+    class="bookmark-item"
+    data-url="{{ bookmark.url | e }}"
+    data-title="{{ bookmark.title | e }}"
+    data-author="{{ (bookmark.author or '') | e }}"
+    data-note="{{ (bookmark.note or '') | e }}"
+    data-domain="{{ bookmark.url | bookmarkDomain | e }}"
+    data-date-formatted="{{ bookmark.dateAdded | formatDateAdded | e }}"
+  >
+    <a href="{{ bookmark.url }}" target="_blank" rel="noopener noreferrer" class="bookmark-title">{{ bookmark.title }}</a>
+    {%- if bookmark.author %}
+    <span class="bookmark-author"> – {{ bookmark.author }}</span>
+    {%- endif %}
+    {%- if bookmark.note %}
+    <span class="bookmark-note">
+      <span class="bookmark-note-icon" aria-hidden="true"></span>
+      <span class="bookmark-note-text">{{ bookmark.note }}</span>
+    </span>
+    {%- endif %}
+    <span class="bookmark-meta">
+      {%- set domain = bookmark.url | bookmarkDomain -%}
+      {%- set dateFormatted = bookmark.dateAdded | formatDateAdded -%}
+      {%- if domain %}{{ domain }}{% endif -%}
+      {%- if domain and dateFormatted %} · {% endif -%}
+      {%- if dateFormatted %}added {{ dateFormatted }}{% endif -%}
+    </span>
+  </li>
+{%- endfor %}
+</ol>
+
+<script src="/js/bookmarks.js" defer></script>
+{%- else %}
+<p class="bookmarks-empty">No bookmarks yet.</p>
+{%- endif %}

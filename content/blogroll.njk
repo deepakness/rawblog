@@ -1,0 +1,94 @@
+---
+title: "Blogroll"
+description: "Blogs whose feeds I follow."
+date: 2026-11-01
+image: /img/og/blogroll.jpeg
+---
+
+{%- set sortedBlogroll = blogroll | sort(attribute='name') -%}
+
+<h1>{{ sortedBlogroll | length }} blogs I follow</h1>
+
+<p>Blogs whose RSS/Atom feeds I follow, sorted by name.</p>
+
+<p class="blogroll-opml">
+  <a href="/blogroll/blogroll.opml" download="{{ metadata.title | slugify }}-blogroll.opml">Download OPML</a> to import into your favorite RSS reader. Only blogs with a public feed are included.
+</p>
+
+{%- for blog in sortedBlogroll -%}
+  {%- set currentLetter = blog.name | first | upper -%}
+  {%- set prevLetter = "" -%}
+
+  {%- if not loop.first -%}
+    {%- set prevBlog = sortedBlogroll[loop.index0 - 1] -%}
+    {%- set prevLetter = prevBlog.name | first | upper -%}
+  {%- endif -%}
+
+  {%- if loop.first or currentLetter != prevLetter -%}
+    {%- if not loop.first -%}</ol>{%- endif -%}
+    {%- set letterCount = 0 -%}
+    {%- for b in sortedBlogroll -%}
+      {%- if b.name | first | upper == currentLetter -%}
+        {%- set letterCount = letterCount + 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+    <h2>{{ currentLetter }} <span class="section-count">({{ letterCount }})</span></h2>
+    <ol class="blogroll-list" start="{{ loop.index }}">
+  {%- endif -%}
+  <li>
+    <a href="{{ blog.url }}" target="_blank" rel="noopener noreferrer" class="blog-name">{{ blog.name }}</a>
+    {%- if blog.feed %} <a href="{{ blog.feed }}" target="_blank" rel="noopener noreferrer" class="blog-feed">feed</a>{% endif %}
+    <span class="blog-url">{{ blog.url | replace("https://", "") | replace("http://", "") | replace("www.", "") | stripTrailingSlash }}</span>
+  </li>
+  {%- if loop.last -%}
+    </ol>
+  {%- endif -%}
+{%- endfor -%}
+
+<style>
+  .blogroll-opml {
+    margin: 0 0 1.5rem;
+  }
+
+  .blogroll-list {
+    margin: 1.5rem 0;
+  }
+
+  .blogroll-list li {
+    padding: 0.6rem 0;
+  }
+
+  .blog-name {
+    font-weight: 500;
+  }
+
+  .blog-url {
+    display: block;
+    opacity: 0.6;
+    margin-top: 0.15rem;
+    line-height: 1.5;
+  }
+
+  main a[href].blog-feed {
+    font-size: 0.75em;
+    font-weight: 500;
+    margin-left: 0.3rem;
+    padding: 0.15em 0.45em !important;
+    border-radius: 100px;
+    color: #fff;
+    background: #f26522;
+    text-decoration: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  main a[href].blog-feed:hover {
+    background: #000;
+    border-bottom: none;
+  }
+
+  .section-count {
+    font-weight: normal;
+    opacity: 0.5;
+  }
+</style>

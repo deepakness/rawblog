@@ -1,0 +1,17 @@
+{% if pagination.pages.length > 1 %}
+<nav class="pagination" aria-label="Pagination">
+  <div class="pagination-numbers">
+    {%- for item in pagination | paginationWindow %}
+    {%- if item.type == "ellipsis" -%}
+    <span class="pagination-ellipsis" aria-hidden="true">&hellip;</span>
+    {%- else -%}
+    <a href="{{ item.href }}"{% if item.current %} aria-current="page"{% endif %}>{{ item.number }}</a>
+    {%- endif -%}
+    {%- endfor %}
+  </div>
+  <div class="pagination-nav">
+    {% if pagination.href.previous %}<a href="{{ pagination.href.previous }}">Previous</a>{% else %}<span>Previous</span>{% endif %}
+    {% if pagination.href.next %}<a href="{{ pagination.href.next }}">Next</a>{% else %}<span>Next</span>{% endif %}
+  </div>
+</nav>
+{% endif %}

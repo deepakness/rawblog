@@ -1,0 +1,23 @@
+[
+	{
+		"src": "/img/gallery/photo-1.jpg",
+		"webp": "/img/gallery/photo-1.webp",
+		"alt": "Placeholder photo with a warm gradient",
+		"width": 1200,
+		"height": 900
+	},
+	{
+		"src": "/img/gallery/photo-2.jpg",
+		"webp": "/img/gallery/photo-2.webp",
+		"alt": "Placeholder photo with a cool gradient",
+		"width": 1200,
+		"height": 1200
+	},
+	{
+		"src": "/img/gallery/photo-3.jpg",
+		"webp": "/img/gallery/photo-3.webp",
+		"alt": "Placeholder photo with a green gradient",
+		"width": 1200,
+		"height": 1500
+	}
+]

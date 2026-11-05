@@ -1,0 +1,9 @@
+_site/
+.cache/
+pnpm-lock.yaml
+public/js/plyr.min.js
+public/css/plyr.css
+content/feed/pretty-atom-feed.xsl
+*.md
+*.njk
+_data/**/*.json

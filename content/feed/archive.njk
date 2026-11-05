@@ -1,0 +1,16 @@
+---
+permalink: /feed/archive.xml
+eleventyExcludeFromCollections:
+  - archiveFeed
+eleventyImport:
+  collections:
+    - archiveFeed
+layout: false
+feed:
+  label: "Everything"
+  subtitle: "Blog posts and raw notes in one feed."
+  path: "/archive/"
+---
+{%- set feedEntries = collections.archiveFeed | head(50) -%}
+{%- set feedUpdated = collections.archiveFeed | getNewestCollectionModifiedDate -%}
+{% include "atom-feed.njk" %}

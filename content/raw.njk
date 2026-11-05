@@ -1,0 +1,55 @@
+---
+title: "Raw notes"
+description: "Short notes, links, and thoughts shared as I go through my day."
+date: 2026-11-01
+image: /img/og/raw.jpeg
+pagination:
+  data: collections.raw
+  size: 25
+  reverse: true
+  alias: rawNotes
+---
+{% set postsCount = collections.raw | length %}
+<div class="archive-title-row">
+	<h1>{{title}}</h1>
+	<a class="archive-feed-icon-link" href="/feed/" title="RSS feed" aria-label="Open RSS feeds page">
+		{% phicon "rss" %}
+	</a>
+	<span class="raw-notes-count">({{postsCount}} notes)</span>
+</div>
+<p>
+	Short notes, links, and thoughts – shared as I go through my day.
+</p>
+
+{%- for note in rawNotes -%}
+<article class="raw-note">
+  <hr class="raw-note-divider">
+  <h2 class="raw-note-title">
+    <a class="raw-note-link" href="{{ note.url }}">{{ note.data.title }}</a>
+  </h2>
+  <ul class="post-metadata raw-note-metadata">
+    <li>
+      {#- see layouts/post.njk: the updated note stays outside <time> so the
+          published date can be an unbreakable run while the note still wraps -#}
+      <time datetime="{{ note.date | htmlDateString }}">{% phicon "calendar-blank" %} {{ note.date | readableDatetime }}</time>
+      {%- if note.data.updated %}
+        <span class="post-metadata-updated">(updated on {{ note.data.updated | readableDate }})</span>
+      {%- endif %}
+    </li>
+    {%- set noteTags = note.data.tags | filterTagList %}
+    {%- if noteTags.length %}
+      <li class="post-metadata-tags">{% phicon "hash" %}
+        {%- for tag in noteTags %}
+          {%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
+          <a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>{% if not loop.last %}<span class="post-tag-sep">·</span>{% endif %}
+        {%- endfor %}
+      </li>
+    {%- endif %}
+  </ul>
+  <div class="raw-note-content">
+    {{ note.templateContent | absoluteUrls(note.url) | safe }}
+  </div>
+</article>
+{%- endfor -%}
+
+{% include "pagination.njk" %}

@@ -1,0 +1,44 @@
+---js
+const pagination = {
+	data: "collections.archiveByYear",
+	size: 1,
+	alias: "archiveYear",
+};
+
+const permalink = (data) => `/archive/${data.archiveYear.year}/`;
+
+const eleventyComputed = {
+	title: (data) => `Archive ${data.archiveYear.year}`,
+	description: (data) => `Combined blog posts and raw notes from ${data.archiveYear.year}.`,
+	image: "/img/og/archive.jpeg",
+	canonicalUrl: (data) => {
+		const archiveYears = data.collections?.archiveByYear || [];
+		const latestYear = archiveYears.length ? archiveYears[0].year : null;
+
+		if (latestYear && data.archiveYear?.year === latestYear) {
+			return `${data.metadata.url}/archive/`;
+		}
+
+		return `${data.metadata.url}/archive/${data.archiveYear.year}/`;
+	},
+};
+---
+
+<div class="archive-title-row">
+  <h1>Archive {{ archiveYear.year }}</h1>
+  <a class="archive-feed-icon-link" href="/feed/" title="RSS feed" aria-label="Open RSS feeds page">
+    {% phicon "rss" %}
+  </a>
+</div>
+<p class="archive-lead">{{ archiveYear.totalCount }} blog posts and notes, organized by month.</p>
+{% include "archive-type-key.njk" %}
+
+{% set archiveYears = collections.archiveByYear or [] %}
+{% set activeYear = archiveYear.year %}
+{% include "archive-years-list.njk" %}
+
+{%- css %}.archive-stream { counter-reset: start-from {{ archiveYear.totalCount + 1 }} }{% endcss %}
+<div class="archive-stream">
+{% set months = archiveYear.months %}
+{% include "archive-month-groups.njk" %}
+</div>

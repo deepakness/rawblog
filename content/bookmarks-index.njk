@@ -1,0 +1,21 @@
+---
+permalink: /bookmarks-index.json
+layout: false
+eleventyExcludeFromCollections: true
+---
+[
+{%- set sorted = bookmarks | sortBookmarksByDate -%}
+{%- for bookmark in sorted -%}
+  {
+    "url": {{ bookmark.url | dump | safe }},
+    "title": {{ bookmark.title | dump | safe }},
+    "author": {{ (bookmark.author or '') | dump | safe }},
+    {%- if bookmark.note %}
+    "note": {{ bookmark.note | dump | safe }},
+    {%- endif %}
+    "dateAdded": {{ bookmark.dateAdded | dump | safe }},
+    "domain": {{ bookmark.url | bookmarkDomain | dump | safe }},
+    "dateFormatted": {{ (bookmark.dateAdded | formatDateAdded) | dump | safe }}
+  }{% if not loop.last %},{% endif %}
+{%- endfor -%}
+]

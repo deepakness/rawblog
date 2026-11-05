@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="{{ metadata.language }}">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script>
+			(function () {
+				var storageKey = "theme-preference";
+				var root = document.documentElement;
+				var preference = null;
+				function isValidPreference(value) {
+					return value === "light" || value === "paper" || value === "dark";
+				}
+				function readPreferenceCookie() {
+					try {
+						var cookiePrefix = storageKey + "=";
+						var cookies = document.cookie ? document.cookie.split("; ") : [];
+						for (var i = 0; i < cookies.length; i++) {
+							if (cookies[i].indexOf(cookiePrefix) !== 0) {
+								continue;
+							}
+							var value = decodeURIComponent(cookies[i].slice(cookiePrefix.length));
+							return isValidPreference(value) ? value : null;
+						}
+					} catch (error) {
+						return null;
+					}
+					return null;
+				}
+				try {
+					var stored = localStorage.getItem(storageKey);
+					if (isValidPreference(stored)) {
+						preference = stored;
+					}
+				} catch (error) {
+					preference = readPreferenceCookie();
+				}
+
+				if (!preference) {
+					preference = readPreferenceCookie();
+				}
+
+				if (preference === "light" || preference === "paper" || preference === "dark") {
+					root.setAttribute("data-theme", preference);
+				} else {
+					root.removeAttribute("data-theme");
+				}
+			})();
+		</script>
+		{# Preconnect hints for faster external resource loading #}
+		{%- if metadata.analytics.umamiSrc and metadata.analytics.umamiId %}
+		{%- set umamiOrigin = metadata.analytics.umamiSrc | urlOrigin %}
+		<link rel="preconnect" href="{{ umamiOrigin }}" crossorigin>
+		<link rel="dns-prefetch" href="{{ umamiOrigin }}">
+		{%- endif %}
+		{%- if assetOrigin %}
+		<link rel="preconnect" href="{{ assetOrigin }}" crossorigin>
+		<link rel="dns-prefetch" href="{{ assetOrigin }}">
+		{%- endif %}
+		{# If index is set, use it as the robots meta tag #}
+		{% if index %}
+		<meta name="robots" content="{{ index }}">
+		{% endif %}
+		<title>{{ title or metadata.title }}{% if title and title != metadata.title %} | {{ metadata.title }}{% endif %}</title>
+		<meta name="description" content="{{ description or metadata.description }}">
+		<link rel="canonical" href="{{ canonicalUrl or (metadata.url + page.url) }}">
+		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="{{ metadata.title }}">
+		{% set socialImageUrl = (ogImage or image or metadata.image) | resolveSocialImageUrl(metadata.url) %}
+		{# Favicon: root .ico for legacy probes; PNG for modern browsers / Google #}
+		<link rel="icon" href="/favicon.ico" sizes="48x48">
+		<link rel="icon" href="{{ metadata.author.avatar }}" type="image/png" sizes="any">
+		<link rel="apple-touch-icon" href="{{ metadata.author.avatar }}">
+		{# Open Graph / Social Media Meta Tags #}
+		<meta property="og:site_name" content="{{ metadata.title }}">
+		<meta property="og:title" content="{{ title or metadata.title }}{% if title and title != metadata.title %} | {{ metadata.title }}{% endif %}">
+		<meta property="og:description" content="{{ description or metadata.description }}">
+		<meta property="og:image" content="{{ socialImageUrl }}">
+		<meta property="og:image:width" content="1200">
+		<meta property="og:image:height" content="630">
+		<meta property="og:image:alt" content="{{ title or metadata.title }}{% if title and title != metadata.title %} | {{ metadata.title }}{% endif %}">
+		<meta property="og:type" content="{% if layout == 'layouts/post.njk' or layout == 'layouts/raw.njk' %}article{% else %}website{% endif %}">
+		<meta property="og:url" content="{{ canonicalUrl or (metadata.url + page.url) }}">
+		{# Twitter Card Tags #}
+		<meta name="twitter:card" content="summary_large_image">
+		{%- if metadata.twitterHandle %}
+		<meta name="twitter:site" content="@{{ metadata.twitterHandle }}">
+		<meta name="twitter:creator" content="@{{ metadata.twitterHandle }}">
+		{%- endif %}
+		<meta name="twitter:title" content="{{ title or metadata.title }}">
+		<meta name="twitter:description" content="{{ description or metadata.description }}">
+		<meta name="twitter:image" content="{{ socialImageUrl }}">
+		<meta name="twitter:image:width" content="1200">
+		<meta name="twitter:image:height" content="630">
+		<meta name="twitter:image:alt" content="{{ title or metadata.title }}{% if title and title != metadata.title %} | {{ metadata.title }}{% endif %}">
+		{# Article tags for blog posts and raw notes #}
+		{% if layout == 'layouts/post.njk' or layout == 'layouts/raw.njk' %}
+		<meta property="article:published_time" content="{{ page.date | isoDateString }}">
+		{% if updated %}
+		<meta property="article:modified_time" content="{{ updated | isoDateString }}">
+		{% endif %}
+		<meta property="article:author" content="{{ metadata.author.name }}">
+		{% endif %}
+		{% if (layout == 'layouts/post.njk' or layout == 'layouts/raw.njk') and metadata.mastodon.username and metadata.mastodon.instance %}
+		<meta name="fediverse:creator" content="@{{ metadata.mastodon.username }}@{{ metadata.mastodon.instance | urlHost }}">
+		{% endif %}
+		{% include "json-ld.njk" %}
+		{%- if metadata.googleSiteVerification %}
+		<meta name="google-site-verification" content="{{ metadata.googleSiteVerification }}">
+		{%- endif %}
+		<meta name="author" content="{{ metadata.author.name }}">
+		{#- The shared stylesheet is one content-hashed file the browser caches.
+		    It sits in <head>, so there is no flash of unstyled content. -#}
+		{%- sitecss %}{% include "public/css/index.css" %}{% endsitecss %}
+		<link rel="stylesheet" href="{% getBundleFileUrl "sitecss" %}">
+
+		{#- Only the handful of per-page rules stay inline (they differ per page
+		    and are far too small to justify a request). -#}
+		<style>{% getBundle "css" %}</style>
+
+		{# Only include the syntax highlighter CSS on blog posts and raw notes #}
+		{% if layout == 'layouts/post.njk' or layout == 'layouts/raw.njk' %}
+		{%- prismcss %}{% include "public/css/prism-vsc-dark-plus.css" %}{% endprismcss %}
+		{%- prismcss %}{% include "public/css/prism-diff.css" %}{%- endprismcss %}
+		<link rel="stylesheet" href="{% getBundleFileUrl "prismcss" %}">
+		{% endif %}
+		{#- Add JavaScript to wrap tables in a scrollable container #}
+		{%- js %}
+		document.addEventListener('DOMContentLoaded', () => {
+			document.querySelectorAll('table').forEach(table => {
+				// A page that already provides its own scroll container marks it with
+				// data-table-wrap. Wrapping again would nest two scroll areas and
+				// apply this wrapper's negative side margins inside the inner one,
+				// pushing the table past its container.
+				if (table.closest('[data-table-wrap]')) return;
+				const wrapper = document.createElement('div');
+				wrapper.className = 'table-wrapper';
+				table.parentNode.insertBefore(wrapper, table);
+				wrapper.appendChild(table);
+			});
+		});
+		{% endjs %}
+		{#- Add JavaScript for theme preference handling #}
+		{%- js %}{% include "public/js/theme.js" %}{% endjs %}
+		{#- Add JavaScript for copy code functionality #}
+		{%- js %}{% include "public/js/copy-code.js" %}{% endjs %}
+		{#- Search keyboard shortcut #}
+		{%- js %}{% include "public/js/search-shortcuts.js" %}{% endjs %}
+		{#- Header avatar floating preview #}
+		{%- js %}{% include "public/js/avatar-preview.js" %}{% endjs %}
+		{#- Archive year rail + All years map #}
+		{%- js %}{% include "public/js/archive-year-nav.js" %}{% endjs %}
+		{#- Close email popup on outside click or Escape #}
+		{%- js %}
+		document.addEventListener('click',function(e){if(!e.target.closest('.email-popup-wrap')){document.querySelectorAll('.email-popup-wrap.open').forEach(function(el){el.classList.remove('open')})}});
+		document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.email-popup-wrap.open').forEach(function(el){el.classList.remove('open')})}});
+		{% endjs %}
+		{%- if metadata.analytics.umamiSrc and metadata.analytics.umamiId %}
+		<script defer src="{{ metadata.analytics.umamiSrc }}" data-website-id="{{ metadata.analytics.umamiId }}"></script>
+		{%- endif %}
+	</head>
+	<body>
+		<div class="skip-links">
+			<a href="#skip" class="visually-hidden">Skip to main content</a>
+			<a href="/search/" class="visually-hidden">Go to search</a>
+		</div>
+		<header>
+			<div class="brand-tools">
+				<div class="brand-identity">
+					<div class="avatar-preview-wrap">
+						<button
+							type="button"
+							class="avatar-preview-btn"
+							id="avatar-preview-button"
+							aria-expanded="false"
+							aria-controls="avatar-preview"
+							aria-label="View larger photo of {{ metadata.author.name }}"
+						>
+							<picture>
+								{% if metadata.author.avatarWebp %}<source type="image/webp" srcset="{{ metadata.author.avatarWebp }}">{% endif %}
+								<source srcset="{{ metadata.author.avatar }}">
+								<img
+									src="{{ metadata.author.avatar }}"
+									alt=""
+									width="60"
+									height="60"
+									loading="eager"
+									decoding="async"
+									data-no-picture
+								>
+							</picture>
+						</button>
+						<div
+							id="avatar-preview"
+							class="avatar-preview"
+							hidden
+						>
+							<picture>
+								{% if metadata.author.avatarWebp %}<source type="image/webp" srcset="{{ metadata.author.avatarWebp }}">{% endif %}
+								<source srcset="{{ metadata.author.avatar }}">
+								<img
+									src="{{ metadata.author.avatar }}"
+									alt="Photo of {{ metadata.author.name }}"
+									width="256"
+									height="256"
+									decoding="async"
+									data-no-picture
+								>
+							</picture>
+						</div>
+					</div>
+					<a href="/" class="home-link">{{ metadata.title }}</a>
+				</div>
+				<button
+					type="button"
+					class="theme-cycle-btn"
+					id="theme-cycle-button"
+					data-theme-cycle
+					data-theme-state="light"
+					aria-label="Current theme: Light. Activate to switch to Paper."
+					title="Current theme: Light"
+				>
+					<span class="theme-cycle-icon" data-theme-icon="light" aria-hidden="true">{% phicon "sun" %}</span>
+					<span class="theme-cycle-icon" data-theme-icon="paper" aria-hidden="true">{% phicon "coffee" %}</span>
+					<span class="theme-cycle-icon" data-theme-icon="dark" aria-hidden="true">{% phicon "moon" %}</span>
+				</button>
+				<script>
+					(function () {
+						var button = document.getElementById("theme-cycle-button");
+						if (!button) {
+							return;
+						}
+						var labels = { light: "Light", paper: "Paper", dark: "Dark" };
+						var order = ["light", "paper", "dark"];
+						var theme = document.documentElement.getAttribute("data-theme");
+						if (theme !== "light" && theme !== "paper" && theme !== "dark") {
+							try {
+								theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+									? "dark"
+									: "light";
+							} catch (error) {
+								theme = "light";
+							}
+						}
+						var nextTheme = order[(order.indexOf(theme) + 1) % order.length];
+						button.setAttribute("data-theme-state", theme);
+						button.setAttribute(
+							"aria-label",
+							"Current theme: " + labels[theme] + ". Activate to switch to " + labels[nextTheme] + "."
+						);
+						button.setAttribute("title", "Current theme: " + labels[theme]);
+					})();
+				</script>
+			</div>
+			<nav>
+				<h2 class="visually-hidden">Top level navigation menu</h2>
+				<ul class="nav">
+					{%- for item in metadata.nav.header %}
+					<li class="nav-item"><a href="{{ item.url }}"{% if page.url and page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+					<li class="nav-sep" aria-hidden="true">✦</li>
+					{%- endfor %}
+					<li class="nav-item"><a href="/search/"{% if page.url and page.url.startsWith("/search/") %} aria-current="page"{% endif %} aria-label="Search">{% phicon "magnifying-glass" %}</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="skip">
+			{{ content | safe }}
+		</main>
+		<footer>
+			<div class="footer-content">
+				<div class="social-links">
+					{%- if metadata.author.email %}
+					<div class="email-popup-wrap">
+						<button class="email-icon-btn" title="Email me" aria-label="Email me" onclick="this.parentElement.classList.toggle('open')">
+							{% phicon "envelope-simple" %}
+						</button>
+						<div class="email-popup">
+							<button onclick="navigator.clipboard.writeText('{{ metadata.author.email }}').then(()=>{const label=this.querySelector('.email-popup-label')||this;label.textContent='Email copied!';setTimeout(()=>{label.textContent='Copy email address';this.closest('.email-popup-wrap').classList.remove('open')},1000)})">
+								<span class="email-popup-icon" aria-hidden="true">{% phicon "copy" %}</span>
+								<span class="email-popup-label">Copy email address</span>
+							</button>
+							<a href="https://mail.google.com/mail/?view=cm&to={{ metadata.author.email }}" target="_blank" rel="noopener noreferrer" onclick="this.closest('.email-popup-wrap').classList.remove('open')">
+								<span class="email-popup-icon" aria-hidden="true">{% phicon "arrow-up-right" %}</span>
+								<span>Open in Gmail</span>
+							</a>
+							<a href="mailto:{{ metadata.author.email }}" onclick="this.closest('.email-popup-wrap').classList.remove('open')">
+								<span class="email-popup-icon" aria-hidden="true">{% phicon "envelope-simple" %}</span>
+								<span>Default email client</span>
+							</a>
+						</div>
+					</div>
+					{%- endif %}
+					{%- for social in metadata.socials %}
+					<a href="{{ social.url }}" target="_blank" rel="me noopener noreferrer" title="{{ social.label }}" aria-label="{{ social.label }}">
+						{% phicon social.icon %}
+					</a>
+					{%- endfor %}
+					{%- if metadata.support.url %}
+					<a href="{{ metadata.support.url }}" target="_blank" rel="me noopener noreferrer" title="{{ metadata.support.label }}" aria-label="{{ metadata.support.label }}">
+						{% phicon metadata.support.icon or "hand-heart" %}
+					</a>
+					{%- endif %}
+				</div>
+				<div class="footer-menu">
+					<nav aria-label="Footer">
+						<ul class="nav footer-nav footer-nav--primary">
+							{%- for item in metadata.nav.footerPrimary %}
+							<li class="nav-item"><a href="{{ item.url }}"{% if page.url and page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+							{%- endfor %}
+						</ul>
+						<ul class="nav footer-nav footer-nav--secondary">
+							{%- for item in metadata.nav.footerSecondary %}
+							<li class="nav-item"><a href="{{ item.url }}"{% if page.url and page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+							{%- endfor %}
+						</ul>
+					</nav>
+				</div>
+				<div class="footer-stats">
+					{%- set yearProgress = siteStats.yearProgress -%}
+					<p class="footer-stats-line">
+						<span class="footer-stat"><strong class="footer-stat-number">{{ siteStats.totals.wordsAll | toLocaleString }}</strong> words</span>
+						<span class="footer-stat-sep" aria-hidden="true">·</span>
+						<span class="footer-stat"><strong class="footer-stat-number">{{ siteStats.totals.posts | toLocaleString }}</strong> posts</span>
+						<span class="footer-stat-sep" aria-hidden="true">·</span>
+						<span class="footer-stat"><strong class="footer-stat-number">{{ siteStats.totals.notes | toLocaleString }}</strong> notes</span>
+					</p>
+					{%- if metadata.githubUsername %}
+					<p class="footer-stats-line">
+						<span class="footer-stat"><strong class="footer-stat-number">{{ (githubContributions or 0) | toLocaleString }}</strong> GitHub contributions in {{ "" | getCurrentYear }}</span>
+					</p>
+					{%- endif %}
+					<p class="f2-line" aria-label="{{ yearProgress.pct }}% of {{ yearProgress.year }} has passed">
+						<span class="f2-bar" aria-hidden="true"><span class="f2-fill">{{ yearProgress.fill }}</span><span class="f2-empty">{{ yearProgress.empty }}</span></span>
+						<span>{{ yearProgress.pct }}% of the year</span>
+					</p>
+				</div>
+				<div class="footer-copyright">
+					<p>© {{ metadata.author.name }} {{ "" | getCurrentYear }} · <a href="/privacy/" class="footer-secondary-link">Privacy</a></p>
+				</div>
+			</div>
+		</footer>
+		<!-- This page `{{ page.url }}` was built on {% currentBuildDate %} -->
+		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
+	</body>
+</html>

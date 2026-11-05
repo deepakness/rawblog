@@ -1,0 +1,87 @@
+---
+title: "Books"
+description: "Books I've read, am reading, and want to read."
+date: 2026-11-01
+image: /img/og/books.jpeg
+---
+
+{% set readingCount = 0 %}
+{% set completedCount = 0 %}
+{% set plannedCount = 0 %}
+{% for book in books %}
+  {% if book.status === "reading" %}{% set readingCount = readingCount + 1 %}
+  {% elif book.status === "completed" %}{% set completedCount = completedCount + 1 %}
+  {% elif book.status === "planned" %}{% set plannedCount = plannedCount + 1 %}
+  {% endif %}
+{% endfor %}
+{% set totalBooks = readingCount + completedCount + plannedCount %}
+
+<h1>{{ totalBooks }} books in my collection</h1>
+
+<p>Books I've read, am reading, and want to read.</p>
+
+<h2>Currently reading <span class="section-count">({{ readingCount }})</span></h2>
+<ol class="book-list">
+  {%- for book in books -%}
+    {%- if book.status === "reading" %}
+  <li>
+    <span class="book-title">{{ book.title }}</span> <span class="book-author">– {{ book.author }}</span>
+    {%- if book.highlight %}<span class="book-highlight">{{ book.highlight }}</span>{% endif %}
+  </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ol>
+
+<h2>Completed <span class="section-count">({{ completedCount }})</span></h2>
+<ol class="book-list">
+  {%- for book in books -%}
+    {%- if book.status === "completed" %}
+  <li>
+    <span class="book-title">{{ book.title }}</span> <span class="book-author">– {{ book.author }}</span>
+    {%- if book.highlight %}<span class="book-highlight">{{ book.highlight }}</span>{% endif %}
+  </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ol>
+
+<h2>Planned <span class="section-count">({{ plannedCount }})</span></h2>
+<ol class="book-list">
+  {%- for book in books -%}
+    {%- if book.status === "planned" %}
+  <li>
+    <span class="book-title">{{ book.title }}</span> <span class="book-author">– {{ book.author }}</span>
+    {%- if book.highlight %}<span class="book-highlight">{{ book.highlight }}</span>{% endif %}
+  </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ol>
+
+<style>
+  .book-list {
+    margin: 1.5rem 0;
+  }
+
+  .book-list li {
+    padding: 0.6rem 0;
+  }
+
+  .book-title {
+    font-weight: 500;
+  }
+
+  .section-count {
+    font-weight: normal;
+    color: var(--text-color-soft);
+  }
+
+  .book-author {
+    color: var(--text-color-muted);
+  }
+
+  .book-highlight {
+    display: block;
+    color: var(--text-color-muted);
+    margin-top: 0.15rem;
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,61 @@
+{%- css %}.postlist { counter-reset: start-from {{ (postslistCounter or postslist.length) + 1 }} }{% endcss %}
+<div class="postlist">
+{%- set entries = postslist if noReverse else (postslist | reverse) %}
+{%- set totalListCount = postslistCounter or entries.length %}
+{%- for post in entries %}
+	{% set entryType = "blog" %}
+	{% if post.entryType %}
+		{% set entryType = post.entryType %}
+	{% elif post.inputPath and ("content/raw/" in post.inputPath) %}
+		{% set entryType = "note" %}
+	{% endif %}
+	{% set postTitle = post.title or post.data.title %}
+	{% set postUpdated = post.updated or post.data.updated %}
+	{% set postTagsRaw = post.tags or post.data.tags %}
+	{% set postTags = postTagsRaw | filterTagList %}
+{%- if post.totalNumber %}
+	{%- set itemNum = post.totalNumber %}
+{%- else %}
+	{%- set itemNum = totalListCount - loop.index0 %}
+{%- endif %}
+{%- if itemNum < 10 and itemNum > 0 %}
+	{%- set formattedNum = "0" ~ itemNum %}
+{%- else %}
+	{%- set formattedNum = "" ~ itemNum %}
+{%- endif %}
+	<article class="postlist-item{% if post.url == page.url %} postlist-item-active{% endif %}" data-number="{{ formattedNum }}">
+		<div class="postlist-hit">
+			{#- Heading level depends on the surrounding page: under an h2 section
+			    (home, archive months) these are h3; on pages where the list sits
+			    directly under the h1 (blog, tag pages) they must be h2, or the
+			    outline skips a level. .postlist-title pins the size so both look
+			    identical. -#}
+			<h{{ postHeadingLevel | default(3) }} class="postlist-title">
+				<a href="{{ post.url }}" class="postlist-link">{% if postTitle %}{{ postTitle }}{% else %}<code>{{ post.url }}</code>{% endif %}</a>
+			</h{{ postHeadingLevel | default(3) }}>
+			<ul class="post-metadata postlist-metadata">
+				<li{% if showKindBadge != false %} class="postlist-kind"{% endif %}>
+					{% if showKindBadge != false %}
+					{% if entryType == "raw" or entryType == "note" %}
+					<span class="entry-kind entry-kind-note" title="note" aria-label="note"></span>
+					{% else %}
+					<span class="entry-kind entry-kind-blog" title="blog" aria-label="blog"></span>
+					{% endif %}
+					{% endif %}
+					<time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDatetime }}</time>
+					{%- if postUpdated %}
+						<span class="post-metadata-updated">(updated {{ postUpdated | readableDate }})</span>
+					{%- endif %}
+				</li>
+				{%- if showTags != false and postTags.length %}
+				<li class="post-metadata-tags">{% phicon "hash" %}
+					{%- for tag in postTags %}
+						<span class="post-tag">{{ tag }}</span>{% if not loop.last %}<span class="post-tag-sep">·</span>{% endif %}
+					{%- endfor %}
+				</li>
+				{%- endif %}
+			</ul>
+		</div>
+	</article>
+{%- endfor %}
+</div>

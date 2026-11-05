@@ -1,0 +1,124 @@
+.tags-controls {
+	display: flex;
+	align-items: center;
+	margin: 1.5rem 0 1.75rem;
+}
+
+.tags-sort-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.9rem;
+}
+
+.tags-sort-label {
+	color: var(--text-color-muted);
+}
+
+.tags-sort-buttons {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.tags-sort-divider {
+	color: var(--text-color-soft);
+	opacity: 0.6;
+	user-select: none;
+}
+
+.tags-sort-btn {
+	background: none;
+	border: none;
+	padding: 0.1rem 0.2rem;
+	font-family: var(--font-family);
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: var(--text-color-muted);
+	cursor: pointer;
+	transition: color 0.15s ease;
+}
+
+.tags-sort-btn:hover {
+	color: var(--text-color);
+}
+
+.tags-sort-btn.is-active {
+	color: var(--text-color-link);
+	font-weight: 600;
+}
+
+.tags-page-list {
+	list-style: none;
+	padding: 0;
+	margin: 1.25rem 0 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	max-width: 100%;
+}
+
+.tags-page-item {
+	display: inline-block;
+	max-width: 100%;
+}
+
+.tags-page-item.is-hidden {
+	display: none !important;
+}
+
+a[href].tags-page-tag,
+a[href].tags-page-tag:visited {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45em;
+	background-color: var(--surface-color-hover);
+	border: 1px solid var(--border-color) !important;
+	color: var(--text-color) !important;
+	padding: 0.35rem 0.8rem !important;
+	border-radius: 0.35rem;
+	text-decoration: none !important;
+	font-size: 0.92em;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease,
+		transform 0.15s ease;
+}
+
+a[href].tags-page-tag:hover {
+	background-color: var(--surface-color);
+	border: 1px solid var(--border-color-strong) !important;
+	color: var(--text-color) !important;
+	transform: translateY(-1px);
+	text-decoration: none !important;
+}
+
+.tags-page-name {
+	font-weight: 500;
+}
+
+.tags-page-count {
+	font-size: 0.78em;
+	font-weight: 600;
+	background-color: rgba(15, 23, 42, 0.07);
+	color: var(--text-color-muted);
+	padding: 0.15em 0.45em;
+	border-radius: 0.25rem;
+	line-height: 1;
+}
+
+[data-theme="dark"] .tags-page-count {
+	background-color: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 500px) {
+	.tags-controls {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.tags-sort-wrapper {
+		justify-content: space-between;
+	}
+}

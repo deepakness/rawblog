@@ -1,0 +1,21 @@
+[
+	{
+		"title": "The Elements of Style",
+		"author": "William Strunk Jr. and E. B. White",
+		"status": "reading",
+		"topics": "Writing, Reference"
+	},
+	{
+		"title": "Walden",
+		"author": "Henry David Thoreau",
+		"status": "completed",
+		"topics": "Nature, Philosophy",
+		"highlight": "A case for living simply and deliberately"
+	},
+	{
+		"title": "The Odyssey",
+		"author": "Homer",
+		"status": "planned",
+		"topics": "Classics, Poetry"
+	}
+]

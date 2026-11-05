@@ -1,0 +1,2938 @@
+/* Defaults */
+:root {
+	--font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	--font-family-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+	--background-color: #f7faff;
+	--surface-color: #ffffff;
+	--surface-color-hover: #ecf2ff;
+	--text-color: #0f172a;
+	--text-color-muted: #4b5563;
+	--text-color-soft: #6b7280;
+	--text-color-link: #3364ff;
+	--text-color-link-active: #2b55d6;
+	--nav-link-color: #1e293b;
+	--focus-ring-color: #3364ff;
+	--focus-ring-shadow: 0 0 0 3px rgba(51, 100, 255, 0.25);
+	--border-color: #d8e0ed;
+	--border-color-strong: #b8c6db;
+	--color-gray-20: #d8e0ed;
+	--color-gray-90: #4b5563;
+	--blockquote-border: #c2d1ff;
+	--table-row-even: rgba(15, 23, 42, 0.03);
+	--inline-code-bg: rgba(51, 100, 255, 0.1);
+	--inline-code-border: #d8e0ed;
+	/* Cool light code panels (default / forced light) */
+	--code-block-bg: #e8eef8;
+	--code-block-border: #c5d0e4;
+	--code-block-text: #0f172a;
+	--copy-btn-bg: rgba(15, 23, 42, 0.05);
+	--copy-btn-bg-hover: rgba(51, 100, 255, 0.12);
+	--copy-btn-border: rgba(15, 23, 42, 0.14);
+	--copy-btn-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+	--copy-btn-success-bg: rgba(34, 197, 94, 0.9);
+	/* Prism token colors – light */
+	--syntax-fg: #0f172a;
+	--syntax-comment: #64748b;
+	--syntax-punctuation: #334155;
+	--syntax-keyword: #2563eb;
+	--syntax-control: #7c3aed;
+	--syntax-function: #6d28d9;
+	--syntax-string: #b45309;
+	--syntax-number: #047857;
+	--syntax-class: #c2410c;
+	--syntax-variable: #1d4ed8;
+	--syntax-regex: #be123c;
+	--syntax-tag: #0f766e;
+	--syntax-attr: #1d4ed8;
+	--syntax-selector: #a16207;
+	--syntax-operator: #334155;
+	--syntax-gray: #64748b;
+	--syntax-selection-bg: #c7d7f5;
+	--raw-divider: rgba(0, 0, 0, 0.12);
+	--archive-year-hover-bg: #f3f6fb;
+	--archive-year-current-color: #0f62fe;
+	--archive-year-current-bg: #e8f0ff;
+	--archive-year-current-ring: #c7dafd;
+	--archive-month-heading: #3d4a57;
+	--archive-month-border: #d0d9e4;
+	--status-blog-text: #c62828;
+	--status-note-text: #1b7d2f;
+	--status-active-text: #1b7d2f;
+	--status-active-bg: #e8f5e9;
+	--status-stable-text: #1565c0;
+	--status-stable-bg: #e3f2fd;
+	--status-acquired-text: #6a1b9a;
+	--status-acquired-bg: #f3e5f5;
+	--status-abandoned-text: #e65100;
+	--status-abandoned-bg: #fff3e0;
+	--status-dead-text: #c62828;
+	--status-dead-bg: #ffebee;
+	--status-retired-text: #546e7a;
+	--status-retired-bg: #eceff1;
+	--rss-color: #ee802f;
+	--rss-color-hover: #d96a1a;
+	--syntax-tab-size: 2;
+
+	/*
+	 * Single source for dark palette values. Both dark application sites
+	 * (forced data-theme + system prefers-color-scheme) map to these.
+	 */
+	--dark-background-color: #121a28;
+	--dark-surface-color: #1a2436;
+	--dark-surface-color-hover: #243247;
+	--dark-text-color: #eef3f9;
+	--dark-text-color-muted: #c5cedb;
+	--dark-text-color-soft: #aeb9ca;
+	--dark-text-color-link: #a3c4ff;
+	--dark-text-color-link-active: #c5d8ff;
+	--dark-nav-link-color: #e8eef7;
+	--dark-focus-ring-color: #a3c4ff;
+	--dark-focus-ring-shadow: 0 0 0 3px rgba(163, 196, 255, 0.28);
+	--dark-border-color: #3d4f6a;
+	--dark-border-color-strong: #536987;
+	--dark-color-gray-20: #3d4f6a;
+	--dark-color-gray-90: #c5cedb;
+	--dark-blockquote-border: #5a73b5;
+	--dark-table-row-even: rgba(255, 255, 255, 0.04);
+	--dark-inline-code-bg: rgba(163, 196, 255, 0.1);
+	--dark-inline-code-border: #3d4f6a;
+	--dark-code-block-bg: #1a2436;
+	--dark-code-block-border: #3d4f6a;
+	--dark-code-block-text: #e8eef7;
+	--dark-copy-btn-bg: rgba(255, 255, 255, 0.08);
+	--dark-copy-btn-bg-hover: rgba(163, 196, 255, 0.2);
+	--dark-copy-btn-border: rgba(255, 255, 255, 0.22);
+	--dark-copy-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+	--dark-copy-btn-success-bg: rgba(46, 204, 113, 0.88);
+	/* Prism token colors – dark (VS Code Dark+) */
+	--dark-syntax-fg: #d4d4d4;
+	--dark-syntax-comment: #6a9955;
+	--dark-syntax-punctuation: #d4d4d4;
+	--dark-syntax-keyword: #569cd6;
+	--dark-syntax-control: #c586c0;
+	--dark-syntax-function: #dcdcaa;
+	--dark-syntax-string: #ce9178;
+	--dark-syntax-number: #b5cea8;
+	--dark-syntax-class: #4ec9b0;
+	--dark-syntax-variable: #9cdcfe;
+	--dark-syntax-regex: #d16969;
+	--dark-syntax-tag: #569cd6;
+	--dark-syntax-attr: #9cdcfe;
+	--dark-syntax-selector: #d7ba7d;
+	--dark-syntax-operator: #d4d4d4;
+	--dark-syntax-gray: #808080;
+	--dark-syntax-selection-bg: #264f78;
+	--dark-raw-divider: rgba(255, 255, 255, 0.2);
+	--dark-archive-year-hover-bg: #243247;
+	--dark-archive-year-current-color: #c5d8ff;
+	--dark-archive-year-current-bg: #2a3f63;
+	--dark-archive-year-current-ring: #5674a8;
+	--dark-archive-month-heading: #d7e1ef;
+	--dark-archive-month-border: #4a6080;
+	--dark-status-blog-text: #ffc1c1;
+	--dark-status-note-text: #bbf7d0;
+	--dark-status-active-text: #bbf7d0;
+	--dark-status-active-bg: rgba(27, 125, 47, 0.4);
+	--dark-status-stable-text: #90caf9;
+	--dark-status-stable-bg: rgba(21, 101, 192, 0.38);
+	--dark-status-acquired-text: #e1bee7;
+	--dark-status-acquired-bg: rgba(106, 27, 154, 0.4);
+	--dark-status-abandoned-text: #ffcc80;
+	--dark-status-abandoned-bg: rgba(230, 81, 0, 0.35);
+	--dark-status-dead-text: #ffc1c1;
+	--dark-status-dead-bg: rgba(198, 40, 40, 0.38);
+	--dark-status-retired-text: #cfd8dc;
+	--dark-status-retired-bg: rgba(84, 110, 122, 0.4);
+
+	/* Nav spacing – one value for header and footer navs at every breakpoint.
+	   In rem, not em, so the gap stays identical even though the footer navs
+	   run at a smaller font size than the header. */
+	--nav-gap-row: 0.4rem;
+	--nav-gap-col: 1.15rem;
+}
+
+html {
+	color-scheme: light dark;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html,
+	body {
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
+	}
+}
+
+/* Shared dark token mapping – keep both sites identical via --dark-* above */
+@media (prefers-color-scheme: dark) {
+	html:not([data-theme]) {
+		--background-color: var(--dark-background-color);
+		--surface-color: var(--dark-surface-color);
+		--surface-color-hover: var(--dark-surface-color-hover);
+		--text-color: var(--dark-text-color);
+		--text-color-muted: var(--dark-text-color-muted);
+		--text-color-soft: var(--dark-text-color-soft);
+		--text-color-link: var(--dark-text-color-link);
+		--text-color-link-active: var(--dark-text-color-link-active);
+		--nav-link-color: var(--dark-nav-link-color);
+		--focus-ring-color: var(--dark-focus-ring-color);
+		--focus-ring-shadow: var(--dark-focus-ring-shadow);
+		--border-color: var(--dark-border-color);
+		--border-color-strong: var(--dark-border-color-strong);
+		--color-gray-20: var(--dark-color-gray-20);
+		--color-gray-90: var(--dark-color-gray-90);
+		--blockquote-border: var(--dark-blockquote-border);
+		--table-row-even: var(--dark-table-row-even);
+		--inline-code-bg: var(--dark-inline-code-bg);
+		--inline-code-border: var(--dark-inline-code-border);
+		--code-block-bg: var(--dark-code-block-bg);
+		--code-block-border: var(--dark-code-block-border);
+		--code-block-text: var(--dark-code-block-text);
+		--copy-btn-bg: var(--dark-copy-btn-bg);
+		--copy-btn-bg-hover: var(--dark-copy-btn-bg-hover);
+		--copy-btn-border: var(--dark-copy-btn-border);
+		--copy-btn-shadow: var(--dark-copy-btn-shadow);
+		--copy-btn-success-bg: var(--dark-copy-btn-success-bg);
+		--syntax-fg: var(--dark-syntax-fg);
+		--syntax-comment: var(--dark-syntax-comment);
+		--syntax-punctuation: var(--dark-syntax-punctuation);
+		--syntax-keyword: var(--dark-syntax-keyword);
+		--syntax-control: var(--dark-syntax-control);
+		--syntax-function: var(--dark-syntax-function);
+		--syntax-string: var(--dark-syntax-string);
+		--syntax-number: var(--dark-syntax-number);
+		--syntax-class: var(--dark-syntax-class);
+		--syntax-variable: var(--dark-syntax-variable);
+		--syntax-regex: var(--dark-syntax-regex);
+		--syntax-tag: var(--dark-syntax-tag);
+		--syntax-attr: var(--dark-syntax-attr);
+		--syntax-selector: var(--dark-syntax-selector);
+		--syntax-operator: var(--dark-syntax-operator);
+		--syntax-gray: var(--dark-syntax-gray);
+		--syntax-selection-bg: var(--dark-syntax-selection-bg);
+		--raw-divider: var(--dark-raw-divider);
+		--archive-year-hover-bg: var(--dark-archive-year-hover-bg);
+		--archive-year-current-color: var(--dark-archive-year-current-color);
+		--archive-year-current-bg: var(--dark-archive-year-current-bg);
+		--archive-year-current-ring: var(--dark-archive-year-current-ring);
+		--archive-month-heading: var(--dark-archive-month-heading);
+		--archive-month-border: var(--dark-archive-month-border);
+		--status-blog-text: var(--dark-status-blog-text);
+		--status-note-text: var(--dark-status-note-text);
+		--status-active-text: var(--dark-status-active-text);
+		--status-active-bg: var(--dark-status-active-bg);
+		--status-stable-text: var(--dark-status-stable-text);
+		--status-stable-bg: var(--dark-status-stable-bg);
+		--status-acquired-text: var(--dark-status-acquired-text);
+		--status-acquired-bg: var(--dark-status-acquired-bg);
+		--status-abandoned-text: var(--dark-status-abandoned-text);
+		--status-abandoned-bg: var(--dark-status-abandoned-bg);
+		--status-dead-text: var(--dark-status-dead-text);
+		--status-dead-bg: var(--dark-status-dead-bg);
+		--status-retired-text: var(--dark-status-retired-text);
+		--status-retired-bg: var(--dark-status-retired-bg);
+		color-scheme: dark;
+	}
+}
+
+html[data-theme="dark"] {
+	--background-color: var(--dark-background-color);
+	--surface-color: var(--dark-surface-color);
+	--surface-color-hover: var(--dark-surface-color-hover);
+	--text-color: var(--dark-text-color);
+	--text-color-muted: var(--dark-text-color-muted);
+	--text-color-soft: var(--dark-text-color-soft);
+	--text-color-link: var(--dark-text-color-link);
+	--text-color-link-active: var(--dark-text-color-link-active);
+	--nav-link-color: var(--dark-nav-link-color);
+	--focus-ring-color: var(--dark-focus-ring-color);
+	--focus-ring-shadow: var(--dark-focus-ring-shadow);
+	--border-color: var(--dark-border-color);
+	--border-color-strong: var(--dark-border-color-strong);
+	--color-gray-20: var(--dark-color-gray-20);
+	--color-gray-90: var(--dark-color-gray-90);
+	--blockquote-border: var(--dark-blockquote-border);
+	--table-row-even: var(--dark-table-row-even);
+	--inline-code-bg: var(--dark-inline-code-bg);
+	--inline-code-border: var(--dark-inline-code-border);
+	--code-block-bg: var(--dark-code-block-bg);
+	--code-block-border: var(--dark-code-block-border);
+	--code-block-text: var(--dark-code-block-text);
+	--copy-btn-bg: var(--dark-copy-btn-bg);
+	--copy-btn-bg-hover: var(--dark-copy-btn-bg-hover);
+	--copy-btn-border: var(--dark-copy-btn-border);
+	--copy-btn-shadow: var(--dark-copy-btn-shadow);
+	--copy-btn-success-bg: var(--dark-copy-btn-success-bg);
+	--syntax-fg: var(--dark-syntax-fg);
+	--syntax-comment: var(--dark-syntax-comment);
+	--syntax-punctuation: var(--dark-syntax-punctuation);
+	--syntax-keyword: var(--dark-syntax-keyword);
+	--syntax-control: var(--dark-syntax-control);
+	--syntax-function: var(--dark-syntax-function);
+	--syntax-string: var(--dark-syntax-string);
+	--syntax-number: var(--dark-syntax-number);
+	--syntax-class: var(--dark-syntax-class);
+	--syntax-variable: var(--dark-syntax-variable);
+	--syntax-regex: var(--dark-syntax-regex);
+	--syntax-tag: var(--dark-syntax-tag);
+	--syntax-attr: var(--dark-syntax-attr);
+	--syntax-selector: var(--dark-syntax-selector);
+	--syntax-operator: var(--dark-syntax-operator);
+	--syntax-gray: var(--dark-syntax-gray);
+	--syntax-selection-bg: var(--dark-syntax-selection-bg);
+	--raw-divider: var(--dark-raw-divider);
+	--archive-year-hover-bg: var(--dark-archive-year-hover-bg);
+	--archive-year-current-color: var(--dark-archive-year-current-color);
+	--archive-year-current-bg: var(--dark-archive-year-current-bg);
+	--archive-year-current-ring: var(--dark-archive-year-current-ring);
+	--archive-month-heading: var(--dark-archive-month-heading);
+	--archive-month-border: var(--dark-archive-month-border);
+	--status-blog-text: var(--dark-status-blog-text);
+	--status-note-text: var(--dark-status-note-text);
+	--status-active-text: var(--dark-status-active-text);
+	--status-active-bg: var(--dark-status-active-bg);
+	--status-stable-text: var(--dark-status-stable-text);
+	--status-stable-bg: var(--dark-status-stable-bg);
+	--status-acquired-text: var(--dark-status-acquired-text);
+	--status-acquired-bg: var(--dark-status-acquired-bg);
+	--status-abandoned-text: var(--dark-status-abandoned-text);
+	--status-abandoned-bg: var(--dark-status-abandoned-bg);
+	--status-dead-text: var(--dark-status-dead-text);
+	--status-dead-bg: var(--dark-status-dead-bg);
+	--status-retired-text: var(--dark-status-retired-text);
+	--status-retired-bg: var(--dark-status-retired-bg);
+	color-scheme: dark;
+}
+
+html[data-theme="light"] {
+	color-scheme: light;
+}
+
+/* Paper: warm cream reading theme (explicit choice, not system).
+ * Monochrome: links share the ink color and chips are neutral. */
+html[data-theme="paper"] {
+	--background-color: #fffcf0;
+	--surface-color: #fffdf7;
+	--surface-color-hover: #f3eee0;
+	--text-color: #100f0f;
+	--text-color-muted: #5e584f;
+	--text-color-soft: #7a7368;
+	--text-color-link: #100f0f;
+	--text-color-link-active: #100f0f;
+	--nav-link-color: #100f0f;
+	--focus-ring-color: #100f0f;
+	--focus-ring-shadow: 0 0 0 3px rgba(16, 15, 15, 0.18);
+	--border-color: #e5dfd0;
+	--border-color-strong: #cfc6b4;
+	--color-gray-20: #e5dfd0;
+	--color-gray-90: #5e584f;
+	--blockquote-border: #d4cbb8;
+	--table-row-even: rgba(16, 15, 15, 0.03);
+	--inline-code-bg: rgba(16, 15, 15, 0.06);
+	--inline-code-border: #e5dfd0;
+	--raw-divider: rgba(16, 15, 15, 0.12);
+	--archive-year-hover-bg: #f3eee0;
+	--archive-year-current-color: #100f0f;
+	--archive-year-current-bg: #ebe4d4;
+	--archive-year-current-ring: #d4cbb8;
+	--archive-month-heading: #3f3b35;
+	--archive-month-border: #d4cbb8;
+	--status-blog-text: #5e584f;
+	--status-note-text: #5e584f;
+	--status-active-text: #5e584f;
+	--status-active-bg: #f0ebe0;
+	--status-stable-text: #5e584f;
+	--status-stable-bg: #f0ebe0;
+	--status-acquired-text: #5e584f;
+	--status-acquired-bg: #f0ebe0;
+	--status-abandoned-text: #5e584f;
+	--status-abandoned-bg: #f0ebe0;
+	--status-dead-text: #5e584f;
+	--status-dead-bg: #f0ebe0;
+	--status-retired-text: #5e584f;
+	--status-retired-bg: #f0ebe0;
+	/* Warm parchment code panels */
+	--code-block-bg: #f3eee0;
+	--code-block-border: #ddd4c0;
+	--code-block-text: #100f0f;
+	--copy-btn-bg: rgba(16, 15, 15, 0.05);
+	--copy-btn-bg-hover: rgba(16, 15, 15, 0.1);
+	--copy-btn-border: rgba(16, 15, 15, 0.14);
+	--copy-btn-shadow: 0 2px 8px rgba(16, 15, 15, 0.08);
+	--copy-btn-success-bg: rgba(61, 92, 69, 0.9);
+	/* Warm muted syntax */
+	--syntax-fg: #100f0f;
+	--syntax-comment: #7a7368;
+	--syntax-punctuation: #3d3a35;
+	--syntax-keyword: #5c4033;
+	--syntax-control: #6b4c7a;
+	--syntax-function: #3d5a40;
+	--syntax-string: #9a3412;
+	--syntax-number: #3d5c45;
+	--syntax-class: #7c4a03;
+	--syntax-variable: #3d4f5f;
+	--syntax-regex: #9a3412;
+	--syntax-tag: #3d5c45;
+	--syntax-attr: #3d4f5f;
+	--syntax-selector: #7c4a03;
+	--syntax-operator: #3d3a35;
+	--syntax-gray: #7a7368;
+	--syntax-selection-bg: #e4dcc8;
+	--rss-color: #5e584f;
+	--rss-color-hover: #100f0f;
+	color-scheme: light;
+}
+
+/* Global stylesheet */
+* {
+	box-sizing: border-box;
+}
+
+@view-transition {
+	navigation: auto;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0 auto;
+	font-family: var(--font-family);
+	font-weight: 400;
+	font-style: normal;
+	font-size: 16px;
+	line-height: 1.45em;
+	color: var(--text-color);
+	background-color: var(--background-color);
+	letter-spacing: normal;
+}
+html {
+	overflow-y: scroll;
+}
+body {
+	max-width: 45em;
+}
+
+body a {
+	max-width: fit-content;
+}
+
+body a.glightbox {
+	max-width: none;
+}
+
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/* Skip links - visible on focus */
+.skip-links a:focus {
+	clip: auto;
+	clip-path: none;
+	height: auto;
+	width: auto;
+	overflow: visible;
+	position: fixed;
+	top: 0.5rem;
+	left: 0.5rem;
+	z-index: 9999;
+	padding: 0.75rem 1rem;
+	background-color: var(--text-color-link);
+	color: #fff;
+	font-weight: 600;
+	border-radius: 4px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+/* Fluid images via https://www.zachleat.com/web/fluid-images/ */
+img {
+	max-width: 100%;
+}
+/*
+ * Companion to the fluid-image rule above: when an image carries width/height
+ * attributes (which it should, to reserve space and avoid layout shift), this
+ * keeps CSS-driven widths from distorting it.
+ *
+ * In :where() so it contributes no specificity. It is a DEFAULT, not an
+ * override -- at its natural weight (0,2,1) it outranks component rules like
+ * `.photo-gallery img { height: 100% }` (0,1,1) and silently stops images from
+ * filling a fixed-ratio box the moment dimensions are added to them.
+ */
+:where(img[width][height]) {
+	height: auto;
+}
+img[src$=".svg"] {
+	width: 100%;
+	height: auto;
+	max-width: none;
+}
+main img {
+	border-radius: 6px;
+}
+video,
+iframe {
+	width: 100%;
+	height: auto;
+}
+iframe {
+	aspect-ratio: 16/9;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+p {
+	line-height: 1.5;
+}
+
+li {
+	line-height: 1.7;
+}
+
+h1 {
+	line-height: 1.4;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-top: 1.5em;
+}
+
+/* Heading sizes */
+h1 {
+	font-size: 1.4em;
+}
+
+h2 {
+	font-size: 1.2em;
+}
+
+h3 {
+	font-size: 1em;
+}
+
+blockquote {
+	border-left: 8px solid var(--blockquote-border);
+	padding-left: 1rem;
+	margin-left: 0;
+	font-size: 90%;
+	font-family: var(--font-family-monospace);
+	width: 100%;
+}
+
+/*
+ * Link defaults are wrapped in :where() so they carry ZERO specificity. These
+ * are broad, opinionated rules that every chip, badge, tag and card link has to
+ * opt out of; at their natural specificity (a[href] is 0,1,1 and main a[href]
+ * is 0,1,2) each opt-out had to shout !important to be heard. Inside :where()
+ * a plain component class (0,1,0) simply wins, so the opt-outs below are just
+ * ordinary rules. Keep the layering: :where(a[href]) is 0,0,0 and
+ * main :where(a[href]) is 0,0,1, so main still beats the global default.
+ */
+:where(a[href]) {
+	color: var(--text-color-link);
+	text-decoration: none;
+}
+:where(a[href]:visited) {
+	color: var(--text-color-link);
+}
+:where(a[href]:hover, a[href]:active) {
+	color: var(--text-color-link-active);
+	text-decoration: none;
+}
+
+/* Links in main content area have native text underlines with comfortable offset.
+ * Descenders (p, g, y) are automatically skipped by the browser for clean typography. */
+main :where(a[href]) {
+	border-bottom: none;
+	text-decoration: underline;
+	text-decoration-color: var(--text-color-link);
+	text-underline-offset: 1.5px;
+	text-decoration-thickness: 1px;
+}
+main :where(a[href]:hover, a[href]:active) {
+	border-bottom: none;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-decoration-color: var(--text-color-link-active);
+	text-underline-offset: 1.5px;
+}
+
+/* Exceptions for UI components, chips, badges, year selectors, and tags that shouldn't have text underlines */
+main a[href].post-tag,
+main a[href].glightbox,
+main a[href].postlist-link,
+main a[href].keep-reading-link,
+main a[href].project-name,
+main a[href].raw-note-link,
+main a[href].status,
+main a[href] .status,
+.status,
+main a[href].archive-year-chip,
+main a[href].archive-year-map-row,
+main a[href].archive-type-key-item,
+.archive-year-chip,
+.archive-year-map-row,
+a[href].tags-page-tag {
+	text-decoration: none;
+	border-bottom: none;
+}
+
+main a[href].post-tag:hover,
+main a[href].glightbox:hover,
+main a[href].postlist-link:hover,
+main a[href].keep-reading-link:hover,
+main a[href].project-name:hover,
+main a[href].raw-note-link:hover,
+main a[href].status:hover,
+main a[href] .status:hover,
+.status:hover,
+main a[href].archive-year-chip:hover,
+main a[href].archive-year-map-row:hover,
+main a[href].archive-type-key-item:hover,
+.archive-year-chip:hover,
+.archive-year-map-row:hover,
+a[href].tags-page-tag:hover {
+	text-decoration: none;
+	border-bottom: none;
+}
+
+main,
+footer {
+	padding: 1rem;
+}
+
+main {
+	margin-top: 1em;
+}
+
+main :first-child {
+	margin-top: 0;
+}
+
+header {
+	border-bottom: 1px dashed var(--color-gray-20);
+}
+
+/* Tables */
+table {
+	margin: 1.5em 0;
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	overflow-x: auto;
+	display: block;
+}
+
+th {
+	border-bottom: 2px solid var(--color-gray-20);
+	padding: 0.75em 0.5em;
+	text-align: left;
+	font-weight: 700;
+}
+
+td {
+	border-bottom: 1px solid var(--color-gray-20);
+	padding: 0.75em 0.5em;
+	vertical-align: top;
+}
+
+tr:last-child td {
+	border-bottom: none;
+}
+
+tr:nth-child(even) {
+	background-color: var(--table-row-even);
+}
+
+/* Make tables scrollable on mobile */
+@media (max-width: 40em) {
+	.table-wrapper {
+		overflow-x: auto;
+		margin: 1.5em -1rem;
+	}
+
+	table {
+		margin: 0 1rem;
+		min-width: 100%;
+	}
+}
+
+pre,
+code {
+	font-family: var(--font-family-monospace);
+	font-size: 0.925em;
+}
+
+/* Inline code */
+:not(pre) > code {
+	background-color: var(--inline-code-bg);
+	padding: 0.15em 0.4em;
+	border-radius: 6px;
+	font-size: 0.85em;
+	word-break: break-word;
+	border: 1px solid var(--inline-code-border);
+}
+
+/* Code blocks – shared surface for language + no-language fences */
+pre:not([class*="language-"]),
+pre[class*="language-"] {
+	margin: 0.5em 0;
+	line-height: 1.5;
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	overflow-x: auto;
+	padding: 1em;
+	padding-right: 2.4em; /* room for copy button */
+	background-color: var(--code-block-bg);
+	border: 1px solid var(--code-block-border);
+	border-radius: 6px;
+	color: var(--code-block-text);
+	scrollbar-width: thin;
+	scrollbar-color: var(--border-color-strong) transparent;
+}
+
+pre:not([class*="language-"])::-webkit-scrollbar,
+pre[class*="language-"]::-webkit-scrollbar {
+	height: 8px;
+}
+
+pre:not([class*="language-"])::-webkit-scrollbar-track,
+pre[class*="language-"]::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+pre:not([class*="language-"])::-webkit-scrollbar-thumb,
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+	background: var(--border-color-strong);
+	border-radius: 4px;
+}
+
+pre:not([class*="language-"]) code {
+	color: inherit;
+	background: none;
+	border: none;
+	padding: 0;
+	font-size: inherit;
+}
+
+/* Highlighted blocks keep Prism token colors; panel uses site tokens */
+pre[class*="language-"] {
+	background: var(--code-block-bg);
+	border-color: var(--code-block-border);
+}
+
+/* Copy code button styles */
+.code-block-wrapper {
+	position: relative;
+	margin: 0.5em 0;
+}
+
+.code-block-wrapper > pre {
+	margin: 0;
+}
+
+.copy-code-btn {
+	position: absolute;
+	top: 0.65em;
+	right: 0.65em;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.55rem;
+	height: 1.55rem;
+	padding: 0;
+	background-color: var(--copy-btn-bg);
+	border: 1px solid var(--copy-btn-border);
+	border-radius: 5px;
+	font-size: 0.75em;
+	font-family: var(--font-family);
+	color: var(--code-block-text);
+	cursor: pointer;
+	transition:
+		background-color 0.15s ease,
+		border-color 0.15s ease,
+		color 0.15s ease,
+		box-shadow 0.15s ease,
+		transform 0.15s ease;
+	backdrop-filter: blur(6px);
+	z-index: 10;
+}
+
+.copy-code-btn:hover {
+	background-color: var(--copy-btn-bg-hover);
+	border-color: var(--text-color-link);
+	color: var(--text-color-link);
+	transform: translateY(-1px);
+	box-shadow: var(--copy-btn-shadow);
+}
+
+.copy-code-btn:focus-visible {
+	outline: 2px solid var(--focus-ring-color);
+	outline-offset: 2px;
+}
+
+.copy-code-btn.copied {
+	background-color: var(--copy-btn-success-bg);
+	border-color: var(--copy-btn-success-bg);
+	color: white;
+}
+
+.copy-code-btn svg {
+	width: 11px;
+	height: 11px;
+	flex-shrink: 0;
+}
+
+/* Header */
+header {
+	display: flex;
+	gap: 0.8em;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1em;
+}
+
+.brand-tools {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+}
+
+.brand-identity {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	min-width: 0;
+}
+
+.avatar-preview-wrap {
+	position: relative;
+	flex-shrink: 0;
+	z-index: 20;
+}
+
+.avatar-preview-btn {
+	display: block;
+	padding: 0;
+	margin: 0;
+	border: none;
+	background: none;
+	cursor: zoom-in;
+	border-radius: 50%;
+	line-height: 0;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.avatar-preview-btn picture,
+.avatar-preview-btn img {
+	display: block;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.avatar-preview-btn picture {
+	overflow: hidden;
+}
+
+.avatar-preview-btn:hover {
+	opacity: 0.92;
+}
+
+.avatar-preview-btn:focus-visible {
+	outline: 2px solid var(--focus-ring-color);
+	outline-offset: 3px;
+}
+
+.avatar-preview-wrap.is-open .avatar-preview-btn {
+	cursor: zoom-out;
+	box-shadow:
+		0 0 0 2px var(--surface-color),
+		0 0 0 4px var(--text-color-link);
+}
+
+.avatar-preview {
+	--avatar-preview-size: clamp(9.5rem, 42vw, 12.5rem);
+	--avatar-preview-left: 0px;
+	position: absolute;
+	top: calc(100% + 0.55rem);
+	left: var(--avatar-preview-left);
+	width: var(--avatar-preview-size);
+	height: var(--avatar-preview-size);
+	max-width: calc(100vw - 1.5rem);
+	max-height: calc(100vw - 1.5rem);
+	padding: 0.28rem;
+	border-radius: 50%;
+	background: var(--surface-color);
+	border: 1px solid var(--border-color);
+	box-shadow:
+		0 10px 28px rgba(15, 23, 42, 0.16),
+		0 2px 8px rgba(15, 23, 42, 0.08);
+	z-index: 30;
+	pointer-events: none;
+	opacity: 0;
+	transform: translateY(-6px) scale(0.92);
+	transform-origin: top left;
+	transition:
+		opacity 0.16s ease,
+		transform 0.16s ease;
+}
+
+.avatar-preview[data-placement="above"] {
+	top: auto;
+	bottom: calc(100% + 0.55rem);
+	transform: translateY(6px) scale(0.92);
+	transform-origin: bottom left;
+}
+
+.avatar-preview-wrap.is-open .avatar-preview {
+	pointer-events: auto;
+}
+
+.avatar-preview-wrap.is-visible .avatar-preview {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.avatar-preview picture,
+.avatar-preview img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.avatar-preview picture {
+	overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.avatar-preview {
+		transition: none;
+		transform: none;
+	}
+
+	.avatar-preview[data-placement="above"] {
+		transform: none;
+	}
+
+	.avatar-preview-wrap.is-visible .avatar-preview {
+		transform: none;
+	}
+}
+
+.home-link {
+	font-size: 1.1em;
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	min-width: 0;
+	color: var(--text-color);
+}
+.home-link:link:not(:hover) {
+	color: var(--text-color);
+	text-decoration: none;
+}
+.home-link:hover {
+	color: var(--text-color-link);
+}
+
+/* Nav */
+.nav {
+	display: flex;
+	align-items: center;
+	gap: var(--nav-gap-row) var(--nav-gap-col);
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	flex-wrap: wrap;
+}
+.nav-item {
+	/* Flex, not inline-block: an inline-block would put the link into an
+	   inline formatting context, where it gets baseline-aligned. An icon-only
+	   link has no text, so its baseline is the icon's own bottom edge – which
+	   hangs the whole icon a descender above the text labels (~3.6px at 16px).
+	   See the "ICON ALIGNMENT" block further down this file. */
+	display: flex;
+	align-items: center;
+}
+
+.nav-item a[href] {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.35em 0.4em;
+	margin: -0.35em -0.4em;
+	border-radius: 4px;
+	color: var(--nav-link-color);
+	font-weight: 500;
+}
+
+.theme-cycle-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.9rem;
+	height: 1.9rem;
+	padding: 0;
+	border: none;
+	background: none;
+	color: var(--text-color-muted);
+	cursor: pointer;
+	transition: color 0.2s ease;
+}
+
+.theme-cycle-icon {
+	display: none;
+	align-items: center;
+	justify-content: center;
+}
+
+.theme-cycle-btn[data-theme-state="light"] [data-theme-icon="light"],
+.theme-cycle-btn[data-theme-state="paper"] [data-theme-icon="paper"],
+.theme-cycle-btn[data-theme-state="dark"] [data-theme-icon="dark"] {
+	display: inline-flex;
+}
+
+/*
+ * Before the inline sync script (or theme.js) updates data-theme-state, the
+ * button HTML defaults to "light". For system-dark visitors with no saved
+ * preference, show the moon immediately so the icon does not flash sun→moon.
+ */
+@media (prefers-color-scheme: dark) {
+	html:not([data-theme]) .theme-cycle-btn[data-theme-state="light"] [data-theme-icon="light"] {
+		display: none;
+	}
+
+	html:not([data-theme]) .theme-cycle-btn[data-theme-state="light"] [data-theme-icon="dark"] {
+		display: inline-flex;
+	}
+}
+
+.theme-cycle-btn svg {
+	width: 15px;
+	height: 15px;
+}
+
+.theme-cycle-btn:hover {
+	color: var(--text-color-link);
+}
+
+.theme-cycle-btn:focus-visible {
+	outline-offset: 4px;
+	border-radius: 50%;
+}
+
+@media (max-width: 40em) {
+	header {
+		gap: 0.55rem;
+	}
+
+	.brand-tools {
+		gap: 0.42rem;
+	}
+
+	.brand-identity {
+		gap: 0.42em;
+	}
+
+	.home-link {
+		font-size: 1.03em;
+	}
+
+	.avatar-preview-btn picture,
+	.avatar-preview-btn img {
+		width: 40px;
+		height: 40px;
+	}
+
+	.avatar-preview {
+		--avatar-preview-size: clamp(8.75rem, 48vw, 11rem);
+	}
+
+	.theme-cycle-btn {
+		width: 1.75rem;
+		height: 1.75rem;
+		margin-top: 0.02rem;
+	}
+
+	.theme-cycle-btn svg {
+		width: 14px;
+		height: 14px;
+	}
+}
+
+@media (max-width: 22em) {
+	.avatar-preview {
+		--avatar-preview-size: min(8.25rem, calc(100vw - 1.5rem));
+	}
+}
+
+.nav-item a[href]:hover {
+	color: var(--text-color-link);
+}
+
+.nav-item a[href]:not(:hover) {
+	text-decoration: none;
+}
+
+/* Star separators between header nav links (decorative, aria-hidden in markup) */
+.nav-sep {
+	display: flex;
+	align-items: center;
+	color: var(--color-gray-20);
+	font-size: 0.8em;
+	user-select: none;
+}
+.nav a[href][aria-current="page"] {
+	text-decoration: underline;
+	text-underline-offset: 1.5px;
+	text-decoration-thickness: 1px;
+}
+
+/* Posts list */
+.postlist {
+	padding: 0;
+	margin: 2rem 0;
+}
+
+.page-intro-divider {
+	border: 0;
+	border-top: 1px solid var(--raw-divider);
+	margin-top: 30px;
+}
+
+.postlist-item {
+	position: relative;
+	margin-bottom: 1.5rem;
+	padding-left: 2.5rem;
+}
+.postlist-item:before {
+	position: absolute;
+	left: 0rem;
+	top: 0.175rem;
+	content: attr(data-number) ".";
+	font-size: 0.85rem;
+	line-height: 1;
+	font-weight: 500;
+	color: var(--text-color-link);
+}
+/* Hit target hugs title+meta width; full-width only on small screens */
+.postlist-hit {
+	position: relative;
+	width: fit-content;
+	max-width: 100%;
+}
+.postlist-title {
+	margin: 0;
+	line-height: 1.3;
+	/* The tag varies (h2 on blog/tag pages, h3 under an h2 section) so that the
+	   heading outline never skips a level. Pin the size so it looks the same
+	   either way -- bare h2 is 1.2em, h3 is 1em. */
+	font-size: 1em;
+}
+.postlist-date {
+	display: block;
+	font-size: 0.8125rem;
+	color: var(--color-gray-90);
+	margin-top: 0rem;
+}
+.postlist-link {
+	text-decoration: none;
+	color: var(--text-color);
+	font-weight: 700;
+	transition: color 0.2s ease;
+}
+/* Stretch within .postlist-hit only (not full article / search results) */
+.postlist-hit .postlist-link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+.postlist-link:hover,
+.postlist-link:active,
+.postlist-hit:hover .postlist-link {
+	color: var(--text-color-link);
+}
+.postlist-item-active .postlist-link {
+	font-weight: bold;
+}
+@media (max-width: 40em) {
+	.postlist-hit {
+		width: 100%;
+	}
+}
+
+/* Tags */
+.post-tag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: lowercase;
+}
+.postlist-item > .post-tag {
+	align-self: center;
+}
+
+/* Tags list */
+.post-metadata {
+	/* One continuous inline run, NOT a wrapping flex row. As flex items each
+	   <li> is an atom that claims a whole flex line the moment it does not fit,
+	   so on narrow screens every item lands on its own row. Inline lets each
+	   item use whatever is left of the current row and wrap the remainder onto
+	   the next – date, then the updated note, then reading time, then tags. */
+	display: block;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	max-width: 100%;
+}
+
+.post-metadata li {
+	/* horizontal separation, replacing the flex column-gap */
+	margin-right: 1em;
+}
+
+.post-metadata time {
+	/* The published date is atomic: never break "May 29, 2026 at 22:34 UTC"
+	   across two lines. The updated note is a sibling, so it still wraps. */
+	white-space: nowrap;
+}
+
+.post-article .post-metadata {
+	margin-bottom: 1rem;
+}
+
+/* Post share & reference action bar (end of post) */
+.post-share-bar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 0.4em 0.8em;
+	flex-wrap: wrap;
+	margin-top: 1.5rem;
+	font-size: 0.8em;
+}
+
+/* Without an affiliate note above, add the same dotted rule that
+   .affiliate-note carries so the bar reads as a distinct footer block.
+   Affiliate pages already have the line, so they skip the modifier. */
+.post-share-bar--ruled {
+	margin-top: 1.75rem;
+	padding-top: 0.75rem;
+	border-top: 1px dashed var(--color-gray-20);
+}
+
+.post-share-actions {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em 0.8em;
+	flex-wrap: wrap;
+}
+
+.post-share-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 0.25em 0.4em;
+	margin: 0;
+	height: 1.6em;
+	box-sizing: border-box;
+	border: none;
+	background: none;
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: 400;
+	line-height: 1;
+	color: var(--text-color-muted);
+	cursor: pointer;
+	text-decoration: none;
+	transition: color 0.15s ease;
+	border-radius: 4px;
+}
+
+.post-share-link:hover {
+	color: var(--text-color-link);
+}
+
+.post-share-text {
+	display: inline-block;
+	line-height: 1;
+}
+
+.post-share-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	height: 1em;
+	color: inherit;
+}
+
+.post-share-icon svg {
+	width: 1em;
+	height: 1em;
+	flex-shrink: 0;
+	display: block;
+}
+
+.post-share-icon.check-icon {
+	display: none;
+	color: var(--text-color-link);
+}
+
+.post-share-link.copied .default-icon {
+	display: none;
+}
+
+.post-share-link.copied .check-icon {
+	display: inline-flex;
+}
+
+.post-share-link.copied {
+	color: var(--text-color);
+	text-decoration: none;
+}
+
+/* Affiliate disclosure (quiet footer, matches keep-reading rhythm) */
+.affiliate-note {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.3em;
+	margin: 1.75rem 0 0;
+	padding-top: 0.75rem;
+	border-top: 1px dashed var(--color-gray-20);
+	font-size: 0.82em;
+	color: var(--text-color-muted);
+	line-height: 1.45;
+}
+
+/* Icon box = first line height so it centers with the first line of text.
+   Phosphor outputs fixed 18×18 attrs – override to match type size. */
+.affiliate-note-icon {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	height: 1.45em; /* match line-height */
+}
+
+.affiliate-note-icon svg {
+	width: 1em;
+	height: 1em;
+	display: block;
+}
+
+.post-metadata li {
+	/* inline, so items flow into each other rather than each taking a row */
+	display: inline;
+	font-size: 0.85em;
+}
+
+.post-metadata-tags {
+	display: inline;
+	max-width: 100%;
+}
+
+.post-metadata li time {
+	/* Inline, NOT inline-flex: as a flex container the date and its icon
+	   become rigid boxes that sit in columns and wrap internally. */
+	display: inline;
+}
+
+.post-metadata-updated {
+	color: var(--text-color-muted);
+	margin-left: 0.2em;
+}
+
+.post-metadata svg {
+	width: 1.1em;
+	height: 1.1em;
+	/* inline-block + vertical-align so the icon sits on the text it labels
+	   even inside an inline run (rule (a) in ICON ALIGNMENT). Inside the flex
+	   `li` this is blockified anyway, so it is safe in both contexts. */
+	display: inline-block;
+	vertical-align: middle;
+	/* replaces the flex gap the li used to provide between icon and text */
+	margin-right: 0.2em;
+}
+
+.post-tag-sep {
+	color: var(--text-color-muted);
+	margin: 0 0.3em;
+	user-select: none;
+}
+
+@media (max-width: 40em) {
+	.post-article .post-metadata li {
+		margin-right: 0.85em;
+	}
+}
+
+/* Keep reading (post/note footer recommendations) */
+.keep-reading {
+	margin: 1.75rem 0 0;
+	padding-top: 0.75rem;
+	border-top: 1px dashed var(--color-gray-20);
+	font-size: 0.92em;
+}
+
+/* Heading + type legend immediately after "Keep reading" (not far-right) */
+.keep-reading-header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: flex-start;
+	gap: 0.4rem 0.65rem;
+	margin: 0 0 0.4rem;
+}
+
+.keep-reading-label {
+	margin: 0;
+	font-size: inherit;
+	font-weight: 700;
+	line-height: inherit;
+}
+
+/*
+ * Compact legend: ● blog / ○ note
+ * Uses theme entry-kind tokens (green/red; monochrome ink on paper).
+ */
+.keep-reading-legend {
+	/* block-level flex item of .keep-reading-header; its baseline is the first
+	   line box, i.e. real text, because the items above stay inline. */
+	display: block;
+	margin: 0;
+	padding: 0;
+	font-size: 0.85em;
+	font-weight: 400;
+	line-height: 1.2;
+	color: var(--color-gray-90);
+}
+
+.keep-reading-legend-item {
+	/* Inline, NOT inline-flex. A flex container takes its baseline from its
+	   first flex item – here the dot – so the whole legend would hang off the
+	   dot's bottom edge and sit high next to the "Keep reading" heading.
+	   Staying inline keeps the text baseline, and lets the dot's own
+	   vertical-align do the centring. */
+	display: inline;
+	color: var(--color-gray-90);
+	font-weight: 400;
+}
+
+.keep-reading-legend-item .entry-kind {
+	/* margin, not the parent's flex gap, now that the item is inline */
+	margin-right: 0.3em;
+}
+
+.keep-reading-legend-label {
+	/* Quiet key next to the bold heading; theme-aware muted ink */
+	color: var(--color-gray-90);
+	font-weight: 400;
+}
+
+.keep-reading-legend-sep {
+	/* replaces the flex gap the legend used to provide */
+	margin: 0 0.4rem;
+	opacity: 0.5;
+	color: var(--color-gray-90);
+	font-weight: 400;
+	user-select: none;
+}
+
+.keep-reading-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+	margin: 0;
+	padding-left: 1.2rem;
+}
+
+.keep-reading-list > li {
+	margin: 0;
+}
+
+/* Whole row is the hit target; only the title gets the link underline treatment */
+.keep-reading-link {
+	display: inline;
+	color: inherit;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+.keep-reading-title {
+	color: var(--text-color-link);
+	text-decoration: underline;
+	text-decoration-color: var(--text-color-link);
+	text-underline-offset: 1.5px;
+	text-decoration-thickness: 1px;
+}
+
+.keep-reading-link:hover .keep-reading-title,
+.keep-reading-link:active .keep-reading-title,
+.keep-reading-link:focus-visible .keep-reading-title {
+	color: var(--text-color-link-active);
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-decoration-color: var(--text-color-link-active);
+	text-underline-offset: 1.5px;
+}
+
+.keep-reading-meta {
+	/* Desktop: stay inline with title when space allows */
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	/* Marker spacing is applied directly to the marker so it matches listings. */
+	gap: 0;
+	margin: 0 0 0 0.45em;
+	vertical-align: middle;
+	font-size: 0.85em;
+	color: var(--color-gray-90);
+}
+
+.keep-reading-meta .status,
+.keep-reading-meta .entry-kind {
+	flex-shrink: 0;
+}
+
+.keep-reading-meta .entry-kind {
+	margin-right: 0.4em;
+}
+
+.keep-reading-meta time {
+	color: var(--color-gray-90);
+}
+
+@media (max-width: 40em) {
+	/* Mobile: chip + date under the title, indented to align with title text */
+	.keep-reading-link {
+		display: inline-block;
+		max-width: 100%;
+		/* Keep the li bullet on the title line (inline-block baseline
+		   would otherwise come from the meta row below the title) */
+		vertical-align: top;
+	}
+
+	.keep-reading-meta {
+		display: flex;
+		margin: 0.15rem 0 0;
+		padding-left: 0;
+	}
+
+	.keep-reading-title {
+		display: inline;
+	}
+}
+
+/* More breathing room before comments */
+.keep-reading + .post-comments {
+	margin-top: 2.75rem;
+}
+
+/* Project status chips (theme tokens) */
+.project-list {
+	margin: 1.5rem 0;
+}
+
+.project-list li {
+	padding: 0.6rem 0;
+}
+
+.project-name {
+	font-weight: 500;
+}
+
+.project-description {
+	display: block;
+	color: var(--text-color-muted);
+	margin-top: 0.15rem;
+	line-height: 1.5;
+}
+
+.project-list .status,
+.status-legend .status {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	font-size: 0.75em;
+	font-weight: 500;
+	margin-left: 0.3rem;
+	padding: 0.1em 0.48em 0.15em 0.48em;
+	border-radius: 3px;
+	line-height: 1.2;
+}
+
+.project-list .status-active,
+.status-legend .status-active {
+	color: var(--status-active-text);
+	background: var(--status-active-bg);
+}
+
+.project-list .status-stable,
+.status-legend .status-stable {
+	color: var(--status-stable-text);
+	background: var(--status-stable-bg);
+}
+
+.project-list .status-acquired,
+.status-legend .status-acquired {
+	color: var(--status-acquired-text);
+	background: var(--status-acquired-bg);
+}
+
+.project-list .status-abandoned,
+.status-legend .status-abandoned {
+	color: var(--status-abandoned-text);
+	background: var(--status-abandoned-bg);
+}
+
+.project-list .status-dead,
+.status-legend .status-dead {
+	color: var(--status-dead-text);
+	background: var(--status-dead-bg);
+}
+
+.project-list .status-retired,
+.status-legend .status-retired {
+	color: var(--status-retired-text);
+	background: var(--status-retired-bg);
+}
+
+.project-dead {
+	text-decoration: line-through;
+	color: var(--text-color-muted);
+}
+
+.status-legend-heading {
+	font-size: 0.9em;
+	color: var(--text-color-muted);
+	margin-top: 2.5rem;
+	margin-bottom: 0.3rem;
+}
+
+.status-legend {
+	font-size: 0.8em;
+	margin-top: 0;
+	list-style: none;
+	padding: 0;
+	color: var(--text-color-muted);
+}
+
+.status-legend li {
+	padding: 0.2rem 0;
+}
+
+.status-legend .status {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 7em;
+	margin-right: 0.4rem;
+	margin-left: 0;
+}
+
+.now-updated {
+	margin: 0.25rem 0 1rem;
+	font-size: 0.92em;
+	color: var(--text-color-muted);
+}
+
+.now-recent-list {
+	list-style: none;
+	padding: 0;
+	margin: 1rem 0;
+}
+
+.now-recent-item {
+	margin-bottom: 1.1rem;
+}
+
+.now-recent-item > a {
+	font-weight: 500;
+}
+
+/* Footer */
+.footer-content {
+	font-size: 0.85em;
+	margin-top: 1em;
+	border-top: 1px dashed var(--color-gray-20);
+	padding-top: 1.5em;
+}
+
+.social-links {
+	display: flex;
+	/* wrap, or a narrow screen pushes the last icons past the viewport edge
+	   and makes the whole page scroll sideways */
+	flex-wrap: wrap;
+	gap: 0.9rem 1.25rem;
+	align-items: center;
+	margin-bottom: 1.5em;
+}
+
+/* Direct children only – do not style links inside the email popup */
+.social-links > a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.35em;
+	margin: -0.35em;
+	border-radius: 4px;
+	color: var(--text-color);
+	transition: color 0.2s ease;
+}
+
+.social-links > a:hover {
+	color: var(--text-color-link);
+}
+
+.social-links > a svg,
+.social-links .email-icon-btn svg {
+	width: 22px;
+	height: 22px;
+}
+
+/*
+ * EMAIL POPUP POSITIONING
+ * -----------------------
+ * The popup used to be anchored to the BUTTON (.email-popup-wrap was the
+ * containing block), so whether it opened left or right had to be guessed with
+ * static selectors – `:not(:only-child)` plus a 600px media query betting that
+ * "space-between puts Email on the right". The bet breaks the moment the row
+ * wraps: the button moves to the left of line 2 while the CSS still pins the
+ * menu to `right: 0`, and it opens off the edge of the screen.
+ *
+ * No selector can know where a flex item wrapped to, so stop trying. The
+ * containing block is now the actions ROW (.comment-actions / .social-links),
+ * which always spans the content column and is therefore always on screen.
+ * With `left: 0` and a max-width capped to that row, the popup cannot overflow
+ * the viewport at any width, in either wrapped or unwrapped state – no media
+ * queries, no direction guessing, no JS.
+ */
+.email-popup-wrap {
+	position: static;
+}
+
+.comment-actions,
+.social-links {
+	position: relative;
+}
+
+.comment-actions .email-popup-wrap {
+	/* Match sibling action height so Mastodon link + Email button share one baseline */
+	display: inline-flex;
+	align-items: center;
+	line-height: 0;
+}
+
+.email-icon-btn {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: var(--text-color);
+	transition: color 0.2s ease;
+	line-height: 0;
+}
+
+.email-icon-btn:hover {
+	color: var(--text-color-link);
+}
+
+/*
+ * Email popup menu – fully self-contained so footer social-link styles and
+ * comment-action line-height:0 do not change item spacing between contexts.
+ */
+.email-popup {
+	display: none;
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 0;
+	background: var(--surface-color);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	padding: 5px;
+	white-space: nowrap;
+	box-shadow:
+		0 4px 18px rgba(0, 0, 0, 0.12),
+		0 1px 3px rgba(0, 0, 0, 0.05);
+	z-index: 20;
+	min-width: 190px;
+	width: max-content;
+	/* 100% is the actions row, which is inside the content column – so this
+	   also keeps the popup inside the viewport, however narrow it gets. */
+	max-width: min(19rem, 100%);
+	box-sizing: border-box;
+	/* Isolate from parent line-height: 0 (comment wrap) and font-size */
+	font-family: var(--font-family);
+	font-size: 0.825rem;
+	font-weight: 400;
+	line-height: 1.3;
+	color: var(--text-color);
+}
+
+.email-popup-wrap.open .email-popup {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 2px;
+}
+
+.email-popup a,
+.email-popup a[href],
+.email-popup button {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	width: 100%;
+	max-width: none;
+	min-width: 100%;
+	align-self: stretch;
+	box-sizing: border-box;
+	margin: 0;
+	background: transparent;
+	border: none;
+	border-radius: 5px;
+	padding: 7px 10px;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	color: var(--text-color);
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease;
+}
+
+.email-popup a:hover,
+.email-popup a[href]:hover,
+.email-popup button:hover,
+.email-popup a:focus,
+.email-popup button:focus {
+	background-color: var(--surface-color-hover, rgba(0, 0, 0, 0.05));
+	color: var(--text-color-link);
+}
+
+.email-popup-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	line-height: 1;
+	width: 14px;
+	height: 14px;
+	color: currentColor;
+	opacity: 0.75;
+}
+
+.email-popup-icon svg {
+	width: 14px;
+	height: 14px;
+	display: block;
+	vertical-align: top;
+}
+
+.email-popup a:hover .email-popup-icon,
+.email-popup button:hover .email-popup-icon {
+	opacity: 1;
+}
+
+.comment-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	align-items: center;
+	justify-content: flex-start;
+	margin: 0;
+	font-size: 0.925rem;
+}
+
+.comment-action {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	line-height: 1.4;
+	font-weight: 500;
+	color: var(--text-color-link);
+	text-decoration: none;
+	border: none;
+	background: none;
+	cursor: pointer;
+	font-size: inherit;
+	font-family: inherit;
+	transition: color 0.15s ease;
+	border-radius: 4px;
+}
+
+.comment-action:hover {
+	color: var(--text-color-link-active);
+}
+
+.comment-action-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	height: 1.1em;
+}
+
+.comment-action-icon svg {
+	width: 1.1em;
+	height: 1.1em;
+	display: block;
+	flex-shrink: 0;
+}
+
+main .comment-actions a,
+main .comment-actions a:hover,
+main .comment-actions a:active,
+main .comment-actions a:focus {
+	border-bottom: none;
+	text-decoration: none;
+}
+
+.comment-actions .email-icon-btn {
+	/* Labeled comment action – match sibling action styling */
+	line-height: 1.4;
+	padding: 0;
+	color: var(--text-color-link);
+}
+
+.comment-actions .email-icon-btn:hover {
+	color: var(--text-color-link-active);
+}
+
+@media (max-width: 600px) {
+	.comment-actions {
+		gap: 0.85rem;
+		justify-content: space-between;
+	}
+}
+
+.footer-menu {
+	margin-bottom: 1.5em;
+}
+
+.footer-nav--primary {
+	margin-bottom: 0.55em;
+}
+
+.footer-nav--secondary {
+	font-size: 0.9em;
+	opacity: 0.75;
+}
+
+.footer-nav--secondary .nav-item a[href] {
+	font-weight: 400;
+}
+
+.footer-nav--secondary:hover,
+.footer-nav--secondary:focus-within {
+	opacity: 1;
+}
+
+.footer-stats-line {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35em 0.65em;
+	margin: 0;
+}
+
+.footer-stats-line + .footer-stats-line {
+	margin-top: 0.2em;
+}
+
+.footer-stat-number {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.footer-stat-sep {
+	opacity: 0.55;
+	user-select: none;
+}
+
+/* Footer year-progress bar: year label, decorative ▓/░ bar, percentage.
+   The bar glyphs are aria-hidden; the label and percentage are the content. */
+.f2-line {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.5em;
+	font-family: var(--font-family-monospace);
+	font-size: 0.95em;
+	color: var(--text-color-soft);
+	margin: 0.45em 0 0;
+}
+
+.f2-bar {
+	letter-spacing: 1px;
+	white-space: nowrap;
+}
+
+.f2-bar .f2-fill {
+	color: var(--text-color-link);
+}
+
+.f2-bar .f2-empty {
+	color: var(--border-color-strong);
+}
+
+.footer-copyright {
+	color: var(--text-color);
+	opacity: 0.8;
+}
+
+.footer-copyright a[href].footer-secondary-link {
+	color: inherit;
+	font-size: inherit;
+}
+
+.footer-copyright a[href].footer-secondary-link:hover,
+.footer-copyright a[href].footer-secondary-link:active,
+.footer-copyright a[href].footer-secondary-link:visited {
+	color: inherit;
+}
+
+/* Post comments (email + Mastodon CTAs) */
+.post-comments {
+	margin-top: 2rem;
+	text-align: left;
+}
+
+.post-comment-actions {
+	margin-top: 2.25rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--border-color, #e6e6e6);
+	text-align: left;
+}
+
+/* Raw archive */
+.raw-note-metadata {
+	margin-top: 0;
+	margin-bottom: 1rem;
+	column-gap: 1em;
+	row-gap: 0.2em;
+}
+
+@media (max-width: 40em) {
+	.raw-note-metadata {
+		column-gap: 0.85em;
+		row-gap: 0.14em;
+	}
+}
+
+/* Qualified with `hr` so it ties `main :first-child` (both 0,1,1) and wins on
+   source order -- each divider is the first child of its .raw-note, so that
+   rule would otherwise zero the top margin and collapse the gap between notes.
+   This replaces an !important that was doing the same job less obviously. */
+hr.raw-note-divider {
+	border: 0;
+	border-top: 1px solid var(--raw-divider);
+	margin: 2.25rem 0 2.25rem;
+}
+
+.raw-note-title {
+	margin-top: 1rem;
+}
+
+.raw-note-content {
+	margin-top: 1rem;
+}
+
+a[href].raw-note-link {
+	border-bottom: none;
+}
+
+/* Combined archive */
+.archive-lead {
+	margin-bottom: 0.4rem;
+	color: var(--color-gray-90);
+}
+
+.archive-type-key {
+	display: flex;
+	flex-wrap: wrap;
+	/* Center, and keep every child on the SAME line-height (see the item rule
+	   below). Two traps here:
+	   - centering boxes of different heights lands their text on different
+	     baselines, so the labels drift off the descriptions;
+	   - `baseline` is not the escape hatch, because each item is itself a flex
+	     container whose first child is the dot – so its baseline resolves to
+	     the dot's bottom edge, not to the label's text. */
+	align-items: center;
+	line-height: 1.2;
+	gap: 0.45rem;
+	margin: 0.35rem 0 1.55rem;
+	font-size: 0.88em;
+	color: var(--color-gray-90);
+}
+
+.archive-key-sep {
+	opacity: 0.5;
+}
+
+/* Type key legend: shape + label (mirrors entry dots) */
+a.archive-type-key-item[href],
+a.archive-type-key-item[href]:visited,
+a.archive-type-key-item[href]:hover,
+a.archive-type-key-item[href]:active {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	color: var(--text-color);
+	text-decoration: none;
+	border-bottom: none;
+	font-weight: 600;
+	/* line-height is set once on .archive-type-key so every child of the row
+	   shares it – mismatched line-heights center to different baselines. */
+}
+
+a.archive-type-key-item[href]:hover .archive-type-key-label,
+a.archive-type-key-item[href]:active .archive-type-key-label {
+	color: var(--text-color-link);
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-underline-offset: 1.5px;
+}
+
+.archive-type-key-desc {
+	color: var(--color-gray-90);
+}
+
+/*
+ * ICON ALIGNMENT – why icons drift upward, and the three rules that fix it
+ * ------------------------------------------------------------------------
+ * An SVG (and an empty dot span) is a replaced element: it has no text, so its
+ * baseline is synthesised as its own BOTTOM EDGE. Two CSS rules then propagate
+ * that bad baseline outward:
+ *
+ *   1. a flex container takes its baseline from its FIRST flex item, and
+ *   2. an inline-level box next to text is aligned by baseline.
+ *
+ * So `<a class="flex"><svg><span>label</span></a>` reports the icon's bottom
+ * edge as the whole link's baseline. Drop that link beside text and the icon
+ * gets hung from the text baseline – the entire icon ends up above it, roughly
+ * one descender high (~3.6px at 16px). That was the header search icon, and
+ * the "Keep reading" legend sitting high next to its heading.
+ *
+ * The three rules, in order of preference:
+ *
+ *   a. Icon + label pairs stay INLINE, with the icon inline-block +
+ *      vertical-align: middle (see .entry-kind below). The wrapper then keeps
+ *      a real text baseline, so parents can align to it correctly.
+ *   b. If a row must be flex, use align-items: center AND give every child the
+ *      same line-height – centering boxes of different heights lands their
+ *      text on different baselines.
+ *   c. Only use align-items: baseline when every child exposes a TEXT
+ *      baseline. If any child is an icon-first flex container, `baseline`
+ *      aligns to that icon's bottom edge and makes things worse, not better.
+ *
+ * Reach for a per-icon transform: translateY() nudge only after (a)-(c); a
+ * nudge silently rots when the font size or line-height around it changes.
+ */
+
+/*
+ * Entry type markers (site-wide):
+ *  - blog = green filled circle
+ *  - note = red hollow ring
+ * Shape carries meaning on paper theme (same ink for both colors).
+ */
+.entry-kind {
+	display: inline-block;
+	width: 0.55em;
+	height: 0.55em;
+	min-width: 0.55em;
+	min-height: 0.55em;
+	border-radius: 50%;
+	flex-shrink: 0;
+	box-sizing: border-box;
+	/* Sit on the text line box; parents use flex align-items: center */
+	vertical-align: middle;
+}
+
+.entry-kind-blog {
+	/* Green filled */
+	background: var(--status-note-text);
+	border: 1.5px solid var(--status-note-text);
+}
+
+.entry-kind-note {
+	/* Red hollow */
+	background: transparent;
+	border: 1.5px solid var(--status-blog-text);
+}
+
+/* Paper: monochrome ink; shape still distinguishes types */
+html[data-theme="paper"] .entry-kind-blog {
+	background: var(--text-color);
+	border-color: var(--text-color);
+}
+
+html[data-theme="paper"] .entry-kind-note {
+	background: transparent;
+	border-color: var(--text-color);
+}
+
+/*
+ * Marker + date share one flex row (same pattern as .keep-reading-meta).
+ * A lone circle in its own inline <li> baseline-aligns to the date and
+ * sits high; putting them together lets align-items: center do the work.
+ * Must beat .post-metadata li { display: inline }.
+ */
+.post-metadata li.postlist-kind,
+.post-metadata li.now-recent-kind,
+.post-metadata li.archive-entry-kind,
+.post-metadata li.search-entry-kind {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: wrap;
+	vertical-align: middle;
+	margin-right: 1em;
+}
+
+.post-metadata .entry-kind {
+	margin-right: 0.4em;
+}
+
+.post-metadata {
+	align-items: center;
+}
+
+.archive-section-title {
+	margin: 1.65rem 0 0.55rem;
+	font-size: 0.83em;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-gray-90);
+}
+
+/* Archive year rail: recent chips + All years map
+ * Chip outlines use box-shadow (not border) so main link border-bottom rules
+ * cannot clip one side of the pill. */
+.archive-year-nav {
+	margin: 0 0 1.35rem;
+}
+
+.archive-year-nav .archive-section-title {
+	margin: 1.65rem 0 0.5rem;
+}
+
+.archive-year-rail {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.archive-year-rail-sep {
+	width: 1px;
+	height: 1.15rem;
+	margin: 0 0.15rem;
+	background: var(--border-color-strong);
+	opacity: 0.7;
+	flex-shrink: 0;
+}
+
+.archive-year-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.32rem 0.62rem;
+	border-radius: 999px;
+	border: none;
+	background: var(--surface-color);
+	color: var(--text-color);
+	font-weight: 600;
+	font-size: 0.92em;
+	line-height: 1.2;
+	box-shadow: 0 0 0 1px var(--border-color);
+	text-decoration: none;
+	transition:
+		background 0.15s ease,
+		box-shadow 0.15s ease,
+		color 0.15s ease;
+}
+
+.archive-year-chip:hover,
+.archive-year-chip:focus-visible {
+	background: var(--archive-year-hover-bg);
+	color: var(--text-color);
+	border: none;
+	box-shadow: 0 0 0 1px var(--border-color-strong);
+	text-decoration: none;
+}
+
+.archive-year-chip:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 1px var(--border-color-strong),
+		var(--focus-ring-shadow);
+}
+
+.archive-year-chip[aria-current="page"],
+.archive-year-chip.is-current,
+.archive-year-chip.is-pinned {
+	color: var(--archive-year-current-color);
+	background: var(--archive-year-current-bg);
+	border: none;
+	box-shadow: 0 0 0 1.5px var(--archive-year-current-ring);
+}
+
+.archive-year-chip-year {
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.01em;
+}
+
+.archive-year-chip-count {
+	font-size: 0.78em;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	color: var(--color-gray-90);
+}
+
+.archive-year-chip[aria-current="page"] .archive-year-chip-count,
+.archive-year-chip.is-current .archive-year-chip-count,
+.archive-year-chip.is-pinned .archive-year-chip-count {
+	color: var(--archive-year-current-color);
+	opacity: 0.78;
+}
+
+.archive-year-all {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
+
+.archive-year-all-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.32rem 0.62rem;
+	border-radius: 999px;
+	border: none;
+	background: transparent;
+	color: var(--color-gray-90);
+	font: inherit;
+	font-size: 0.88em;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	box-shadow: 0 0 0 1px var(--border-color-strong);
+	/* dashed ring via background trick would be complex; use solid to match chips */
+	transition:
+		background 0.15s ease,
+		box-shadow 0.15s ease,
+		color 0.15s ease;
+}
+
+.archive-year-all-btn:hover,
+.archive-year-all-btn:focus-visible,
+.archive-year-all.is-open .archive-year-all-btn,
+.archive-year-all:has(.archive-year-map:popover-open) .archive-year-all-btn {
+	background: var(--archive-year-hover-bg);
+	color: var(--text-color);
+	box-shadow: 0 0 0 1px var(--border-color-strong);
+}
+
+.archive-year-all-btn:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 1px var(--border-color-strong),
+		var(--focus-ring-shadow);
+}
+
+.archive-year-all-btn-meta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.35em;
+	padding: 0.05rem 0.35rem;
+	border-radius: 999px;
+	background: var(--surface-color-hover);
+	font-size: 0.82em;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	color: var(--color-gray-90);
+}
+
+.archive-year-all-btn::after {
+	content: "";
+	width: 0.35rem;
+	height: 0.35rem;
+	margin-left: 0.05rem;
+	border-right: 1.5px solid currentColor;
+	border-bottom: 1.5px solid currentColor;
+	transform: translateY(-0.1rem) rotate(45deg);
+	opacity: 0.7;
+	transition: transform 0.15s ease;
+}
+
+.archive-year-all.is-open .archive-year-all-btn::after,
+.archive-year-all:has(.archive-year-map:popover-open) .archive-year-all-btn::after {
+	transform: translateY(0.05rem) rotate(225deg);
+}
+
+/* Full year map (popover). Sized to content; JS only sets top/left for placement. */
+.archive-year-map {
+	inset: unset;
+	margin: 0;
+	position: fixed;
+	top: var(--archive-map-top, 4.5rem);
+	left: var(--archive-map-left, auto);
+	right: var(--archive-map-right, 1rem);
+	width: max-content;
+	max-width: min(16rem, calc(100vw - 1.5rem));
+	max-height: min(24rem, calc(100vh - 1.5rem));
+	overflow: auto;
+	padding: 0.45rem 0.35rem 0.35rem;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	background: var(--surface-color);
+	color: var(--text-color);
+	box-shadow:
+		0 14px 36px color-mix(in srgb, var(--text-color) 14%, transparent),
+		0 3px 10px color-mix(in srgb, var(--text-color) 7%, transparent);
+	z-index: 40;
+}
+
+.archive-year-map[hidden] {
+	display: none !important;
+}
+
+/* No-Popover-API fallback: panel anchors under the All years control */
+.archive-year-all.is-open .archive-year-map:not(:popover-open) {
+	position: absolute;
+	top: calc(100% + 0.4rem);
+	right: 0;
+	left: auto;
+	width: max-content;
+	max-width: min(16rem, calc(100vw - 1.5rem));
+}
+
+.archive-year-map-head {
+	padding: 0.15rem 0.5rem 0.45rem;
+	border-bottom: 1px solid var(--border-color);
+	margin: 0 0.1rem 0.25rem;
+}
+
+.archive-year-map-title {
+	margin: 0;
+	font-size: 0.9em;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+}
+
+.archive-year-map-sub {
+	margin: 0.18rem 0 0;
+	font-size: 0.76em;
+	color: var(--color-gray-90);
+	line-height: 1.3;
+}
+
+.archive-year-map-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.05rem;
+	padding: 0.05rem 0;
+}
+
+.archive-year-map-decade {
+	margin: 0.4rem 0 0.1rem;
+	padding: 0 0.5rem;
+	font-size: 0.7em;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-gray-90);
+}
+
+.archive-year-map-decade:first-child {
+	margin-top: 0.1rem;
+}
+
+.archive-year-map-row {
+	display: grid;
+	/* Fixed bar width so the panel stays tight; no stretchy empty track. */
+	grid-template-columns: 3rem 5.25rem 2.35rem;
+	align-items: center;
+	column-gap: 0.5rem;
+	padding: 0.36rem 0.5rem;
+	border-radius: 8px;
+	color: var(--text-color);
+	border: none;
+	font-size: 0.9em;
+	line-height: 1.2;
+	outline: none;
+	text-decoration: none;
+	transition: background 0.12s ease;
+}
+
+.archive-year-map-row:hover,
+.archive-year-map-row:focus-visible {
+	background: var(--archive-year-hover-bg);
+	border: none;
+	text-decoration: none;
+}
+
+.archive-year-map-row:focus-visible {
+	box-shadow: inset 0 0 0 2px var(--focus-ring-color);
+}
+
+.archive-year-map-row.is-current,
+.archive-year-map-row[aria-current="page"] {
+	background: var(--archive-year-current-bg);
+	color: var(--archive-year-current-color);
+	box-shadow: inset 0 0 0 1px var(--archive-year-current-ring);
+}
+
+.archive-year-map-year {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Activity bar: track always fills the middle column; fill width is a % */
+.archive-year-map-bar {
+	display: block;
+	width: 100%;
+	height: 0.5rem;
+	border-radius: 999px;
+	background: var(--border-color);
+	overflow: hidden;
+	align-self: center;
+}
+
+.archive-year-map-bar-fill {
+	display: block;
+	height: 100%;
+	/* width set inline as a percentage of the track */
+	width: 0%;
+	min-width: 0.35rem;
+	max-width: 100%;
+	border-radius: inherit;
+	background: var(--archive-year-current-color);
+	opacity: 0.72;
+}
+
+.archive-year-map-row.is-current .archive-year-map-bar-fill,
+.archive-year-map-row[aria-current="page"] .archive-year-map-bar-fill {
+	opacity: 1;
+}
+
+.archive-year-map-row:hover .archive-year-map-bar-fill {
+	opacity: 0.9;
+}
+
+.archive-year-map-count {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+	font-size: 0.86em;
+	font-weight: 500;
+	color: var(--color-gray-90);
+}
+
+.archive-year-map-row.is-current .archive-year-map-count,
+.archive-year-map-row[aria-current="page"] .archive-year-map-count {
+	color: var(--archive-year-current-color);
+	opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.archive-year-chip,
+	.archive-year-all-btn,
+	.archive-year-all-btn::after,
+	.archive-year-map-row {
+		transition: none;
+	}
+}
+
+.archive-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.2rem;
+}
+
+.archive-title-row h1 {
+	margin: 0;
+}
+
+.archive-feed-icon-link[href] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	color: var(--rss-color);
+	transition: color 0.2s ease;
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.archive-feed-icon-link[href]:hover,
+.archive-feed-icon-link[href]:active {
+	color: var(--rss-color-hover);
+	border-bottom: none;
+}
+
+.archive-feed-icon-link svg {
+	display: block;
+	transform: translateY(1px);
+}
+
+.raw-notes-count {
+	font-size: 0.925em;
+	font-family: var(--font-family-monospace);
+}
+
+/* Clear break after year nav before the entry stream */
+.archive-stream {
+	margin-top: 2.25rem;
+}
+
+.archive-month-section {
+	margin-top: 2.5rem;
+}
+
+/* First month sits directly under the stream gap – no double top margin */
+.archive-month-section:first-child {
+	margin-top: 0;
+}
+
+/* Month header: year eyebrow, then "August (11)" with a short accent.
+ * (Not a <header> element – site chrome uses header { display:flex; space-between }.) */
+.archive-month-header {
+	display: block;
+	margin: 0 0 1rem;
+	padding: 0;
+	border: none;
+	text-align: left;
+}
+
+.archive-month-year {
+	display: block;
+	margin: 0 0 0.12rem;
+	font-size: 0.72em;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	line-height: 1.3;
+	color: var(--color-gray-90);
+	text-align: left;
+}
+
+.archive-month-heading {
+	display: inline-block;
+	margin: 0;
+	padding: 0 0 0.5rem;
+	font-size: 1.15em;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	text-transform: none;
+	line-height: 1.25;
+	color: var(--archive-month-heading);
+	font-family: var(--font-family);
+	border-bottom: none;
+	/* Short accent under the heading text only */
+	background: linear-gradient(
+		to right,
+		var(--archive-month-border) 0,
+		var(--archive-month-border) 2.5rem,
+		transparent 2.5rem
+	);
+	background-position: left bottom;
+	background-repeat: no-repeat;
+	background-size: 100% 2px;
+}
+
+.archive-month-total {
+	margin-left: 0.3em;
+	font-size: 0.82em;
+	font-weight: 400;
+	font-variant-numeric: tabular-nums;
+	color: var(--color-gray-90);
+	letter-spacing: 0;
+}
+
+/* Kept for search results (public/js/search.js still uses these classes) */
+.archive-entry {
+	padding: 0.05rem 0;
+}
+
+.archive-entry-title {
+	margin: 0;
+	line-height: 1.26;
+	font-size: 1.04em;
+	font-weight: 700;
+}
+
+.archive-entry-metadata {
+	margin-top: 0.34rem;
+	margin-bottom: 0;
+	column-gap: 0.75rem;
+	row-gap: 0.28rem;
+}
+
+.archive-entry-metadata li {
+	font-size: 0.8em;
+	color: var(--color-gray-90);
+}
+
+.archive-entry-metadata li.archive-entry-kind {
+	color: inherit;
+}
+
+.archive-entry-metadata svg {
+	width: 1em;
+	height: 1em;
+}
+
+.home-feed-metadata {
+	margin-top: 0.34rem;
+	margin-bottom: 0;
+	column-gap: 0.7rem;
+	row-gap: 0.28rem;
+}
+
+.home-feed-metadata li {
+	font-size: 0.8em;
+	color: var(--color-gray-90);
+}
+
+.archive-type-key a.status[href]:hover,
+.archive-type-key a.status[href]:active,
+.archive-entry-metadata a.status[href]:hover,
+.archive-entry-metadata a.status[href]:active,
+.postlist-metadata a.status[href]:hover,
+.postlist-metadata a.status[href]:active {
+	border-bottom: none;
+}
+
+.postlist-metadata {
+	margin-top: 0.34rem;
+	margin-bottom: 0;
+	column-gap: 0.75rem;
+	row-gap: 0.28rem;
+}
+
+.postlist-metadata li {
+	font-size: 0.8em;
+	color: var(--color-gray-90);
+}
+
+.postlist-metadata li.postlist-kind {
+	color: inherit;
+}
+
+.postlist-metadata a {
+	position: relative;
+	z-index: 2;
+}
+
+/* Pagination styles */
+.pagination {
+	margin-top: 2em;
+	font-size: 0.9em;
+}
+
+.pagination-numbers {
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.pagination-numbers a,
+.pagination-numbers span {
+	margin-right: 0.9em;
+	border-bottom: none;
+}
+
+.pagination-numbers a:last-child,
+.pagination-numbers span:last-child {
+	margin-right: 0;
+}
+
+.pagination-numbers a[aria-current="page"] {
+	text-decoration: none;
+	font-weight: bold;
+	color: var(--color-gray-90);
+}
+
+.pagination-ellipsis {
+	opacity: 0.55;
+	user-select: none;
+}
+
+.pagination-nav {
+	display: flex;
+	justify-content: space-between;
+}
+
+.pagination-nav a,
+.pagination-nav span {
+	color: var(--text-color-link);
+	border-bottom: none;
+}
+
+.pagination-nav span {
+	opacity: 0.5;
+}
+
+/* Raw Notes list */
+.rawnoteslist {
+	padding: 0;
+	margin: 2rem 0;
+}
+.rawnoteslist .postlist-item {
+	position: relative;
+	margin-bottom: 1.5rem;
+	padding-left: 2.5rem;
+}
+.rawnoteslist .postlist-item:before {
+	position: absolute;
+	left: 0rem;
+	content: counter(start-from, decimal-leading-zero) ".";
+	counter-increment: start-from -1;
+	font-size: 0.85rem;
+	font-weight: 500;
+	color: var(--text-color-link);
+}
+
+/* Focus Visible Styles */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+	outline: 2px solid var(--focus-ring-color);
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+/* Remove outline for mouse clicks (when focus-visible supported) */
+@supports selector(:focus-visible) {
+	a:focus:not(:focus-visible),
+	button:focus:not(:focus-visible) {
+		outline: none;
+	}
+}
+
+/* Specific elements */
+.nav-item a:focus-visible {
+	outline-offset: 4px;
+}
+.home-link:focus-visible {
+	outline-offset: 4px;
+	border-radius: 4px;
+}
+.social-links > a:focus-visible,
+.email-icon-btn:focus-visible {
+	outline-offset: 4px;
+	border-radius: 50%;
+}
+.post-tag:focus-visible {
+	outline-offset: 2px;
+}
+
+/* Print Stylesheet */
+@media print {
+	/* Page setup */
+	@page {
+		margin: 2cm;
+		size: A4;
+	}
+	body {
+		max-width: 100%;
+		font-size: 12pt;
+	}
+
+	/* Hide non-essential elements */
+	header,
+	footer,
+	nav:not(.pagination),
+	.skip-links,
+	.post-comments,
+	.social-links,
+	.copy-code-btn,
+	script {
+		display: none !important;
+	}
+
+	/* Typography */
+	h1 {
+		font-size: 24pt;
+		page-break-after: avoid;
+	}
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		page-break-after: avoid;
+	}
+	p,
+	li {
+		orphans: 3;
+		widows: 3;
+	}
+
+	/* Show URLs for external links */
+	main a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.8em;
+		color: #666;
+	}
+	main a[href^="/"]::after {
+		content: none;
+	}
+	main a[href] {
+		border-bottom: none;
+	}
+
+	/* Images and code */
+	img {
+		max-width: 100% !important;
+		page-break-inside: avoid;
+	}
+	pre {
+		white-space: pre-wrap;
+		page-break-inside: avoid;
+		background: #f5f5f5 !important;
+	}
+}
+
+/* Plyr player theme (self-hosted video embeds) */
+:root {
+	--plyr-color-main: #3364ff;
+}

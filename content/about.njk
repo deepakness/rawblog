@@ -1,0 +1,288 @@
+---
+title: "About"
+description: "Who I am and what this site is about."
+date: 2026-11-01
+image: /img/og/about.jpeg
+---
+{# GLightbox CSS and JS (pinned) #}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.1/dist/css/glightbox.min.css">
+<script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.1/dist/js/glightbox.min.js"></script>
+
+<style>
+  .photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .photo-gallery a {
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .photo-gallery a:hover {
+    transform: translateY(-5px);
+  }
+
+  .photo-gallery picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .photo-gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 480px) {
+    .photo-gallery {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  /* Statistics */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(161px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+    border: 1px solid var(--color-gray-20);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  /* GitHub activity, rendered as terminal output. The palette is deliberately
+     fixed in both themes – a terminal reads as a terminal only when it's dark. */
+  .stat-card-terminal {
+    grid-column: 1 / -1;
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    /* Clips the title bar's top corners to the card radius */
+    overflow: hidden;
+    color: #c9d1d9;
+    font-family: var(--font-family-monospace);
+    font-size: clamp(11px, 2.7vw, 13px);
+    line-height: 1.55;
+  }
+
+  .term-bar {
+    display: flex;
+    gap: 8px;
+    padding: 0.6rem 0.75rem;
+    background: #161b22;
+    border-bottom: 1px solid #21262d;
+  }
+
+  .term-bar span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .term-bar span:nth-child(1) { background: #ff5f57; }
+  .term-bar span:nth-child(2) { background: #febc2e; }
+  .term-bar span:nth-child(3) { background: #28c840; }
+
+  /* Scrolls independently so the title bar stays put on narrow screens */
+  .term-body {
+    overflow-x: auto;
+  }
+
+  /* The padding lives here, not on the scroll container. A scroll container's
+     padding-right sits at the edge of its content box, so it collapses the
+     moment the content overflows and the right side loses its inset. Sizing
+     this wrapper to max-content puts the padding after the widest line, where
+     the scroll actually ends. */
+  .term-inner {
+    width: max-content;
+    min-width: 100%;
+    padding: 1rem 1.1rem;
+  }
+
+  .term-user { color: #7ee787; }
+  .term-path,
+  .term-accent { color: #79c0ff; }
+  .term-muted { color: #8b949e; }
+  .term-value { color: #e3b341; }
+
+  .term-stats {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 1.5ch;
+    margin: 1em 0;
+  }
+
+  .term-key { color: #8b949e; }
+
+  /* Shrink-wraps to the sparkline so the two axis labels sit flush with its
+     ends, rather than with the far edge of the 1fr value column */
+  .term-weekly {
+    display: block;
+    width: max-content;
+  }
+
+  .term-spark {
+    display: block;
+    /* A little tracking keeps the block glyphs from fusing into one bar */
+    letter-spacing: 0.5px;
+    white-space: pre;
+  }
+
+  .term-axis {
+    display: flex;
+    justify-content: space-between;
+    color: #8b949e;
+  }
+
+  .term-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1em;
+    background: #c9d1d9;
+    vertical-align: text-bottom;
+  }
+
+  .stat-number {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-color-link);
+    line-height: 1.1;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
+  .stats-note {
+    font-size: 0.85rem;
+    color: var(--text-color-soft);
+  }
+</style>
+
+<script>
+    // Initialize GLightbox
+    window.addEventListener('load', () => {
+        GLightbox({
+            touchNavigation: true,
+            loop: true,
+            autoplayVideos: true,
+            preload: true,
+            moreLength: 0,
+            descPosition: 'none',
+            showDescriptionOnOpen: false
+        });
+    });
+</script>
+
+<h1>{{title}}</h1>
+
+{# Edit this page in content/about.njk #}
+<p>Hi, I'm {{ metadata.author.name }}. Write a few lines here about who you are, what you do, and what this site is for. A list of random facts works well too:</p>
+
+<ol>
+	<li>I write longer posts on the <a href="/blog/">blog</a> and quick thoughts as <a href="/raw/">raw notes</a>.</li>
+	<li>I love to <a href="/books/">read</a>.</li>
+	<li>I like coffee more than tea.</li>
+</ol>
+
+<p>You can also subscribe to the <a href="/feed/">RSS feeds</a> to stay updated with posts and notes. If you are curious about how this site is built, <a href="/colophon/">see the colophon</a>.</p>
+
+<h2>Random stats</h2>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-number">{{ siteStats.totals.wordsAll | toLocaleString }}</span>
+    <span class="stat-label">total words</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ siteStats.totals.posts }}</span>
+    <span class="stat-label">blog posts</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ siteStats.totals.notes }}</span>
+    <span class="stat-label">raw notes</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ siteStats.totals.imagesAll }}</span>
+    <span class="stat-label">images on website</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ projects.projects | length }}</span>
+    <span class="stat-label">projects</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">{{ books | getBookCount }}</span>
+    <span class="stat-label">books in collection</span>
+  </div>
+  {%- if metadata.githubUsername and githubActivity %}
+  <div class="stat-card-terminal">
+    <div class="term-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="term-body">
+      <div class="term-inner">
+        <div><span class="term-user">{{ metadata.githubUsername }}@github</span>:<span class="term-path">~</span>$ gh-stats --last-year</div>
+        <div class="term-muted">fetching {{ metadata.githubUsername }}'s github…</div>
+        <div class="term-stats">
+          <span class="term-key">total</span>
+          <span><span class="term-value">{{ githubActivity.total | toLocaleString }}</span> contributions</span>
+          <span class="term-key">active</span>
+          <span>{{ githubActivity.activeDays }}/{{ githubActivity.totalDays }} days</span>
+          <span class="term-key">streak</span>
+          <span>{{ githubActivity.currentStreak }} days <span class="term-muted">(best: {{ githubActivity.bestStreak }})</span></span>
+          <span class="term-key">busiest</span>
+          {#- busiestDate is the fallback for a cached snapshot written before busiestLabel existed -#}
+          <span>{{ githubActivity.busiestCount }} on {{ githubActivity.busiestLabel or githubActivity.busiestDate }}</span>
+          <span class="term-key">weekly</span>
+          <span class="term-weekly">
+            {#- One block character per week, scaled against the busiest week.
+                Decorative: every number it encodes is already stated above. -#}
+            <span class="term-spark term-accent" aria-hidden="true">{{ githubActivity.sparkline }}</span>
+            <span class="term-axis" aria-hidden="true"><span>{{ githubActivity.startLabel }}</span><span>{{ githubActivity.endLabel }}</span></span>
+          </span>
+        </div>
+        <div class="term-muted"># one block per week, scaled against the busiest</div>
+        <div><span class="term-user">{{ metadata.githubUsername }}@github</span>:<span class="term-path">~</span>$ <span class="term-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+  {%- elif metadata.githubUsername %}
+  <div class="stat-card">
+    <span class="stat-number">{{ (githubContributions365 or 0) | toLocaleString }}</span>
+    <span class="stat-label">GitHub contributions in the last 365 days</span>
+  </div>
+  {%- endif %}
+</div>
+
+<p class="stats-note">All of these are counted fresh every time the site builds. There are a lot more of them on the <a href="/stats/">stats page</a>.</p>
+
+<h2>Some moments</h2>
+
+<p>Some photos. Replace them in <code>public/img/gallery/</code> and list them in <code>_data/gallery.json</code>.</p>
+
+<div class="photo-gallery">
+    {%- for photo in gallery %}
+    <a href="{{ photo.src }}" class="glightbox" data-gallery="gallery1">
+        <picture>
+            {%- if photo.webp %}
+            <source srcset="{{ photo.webp }}" type="image/webp">
+            {%- endif %}
+            <img src="{{ photo.src }}" alt="{{ photo.alt }}" width="{{ photo.width }}" height="{{ photo.height }}" loading="lazy" decoding="async">
+        </picture>
+    </a>
+    {%- endfor %}
+</div>

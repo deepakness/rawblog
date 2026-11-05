@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects. One rule per line: <from> <to> [status]
+# /old-post/  /blog/new-post/  301
+/rss.xml  /feed/feed.xml  301

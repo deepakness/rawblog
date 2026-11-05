@@ -1,0 +1,52 @@
+{
+	"name": "rawblog",
+	"version": "1.0.0",
+	"description": "An opinionated Eleventy blog starter with long-form posts, short raw notes, OG images, and an image/video pipeline.",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@11.24.0",
+	"scripts": {
+		"build": "eleventy",
+		"start": "eleventy --serve --quiet",
+		"site:setup": "node scripts/setup.js",
+		"check": "node scripts/check.js",
+		"format": "prettier --write .",
+		"ready": "node scripts/optimize-images.js && node scripts/process-videos.js && node scripts/generate-og-images.js && node scripts/sync-r2-images.js",
+		"blog": "node scripts/create-blog.js",
+		"blog:push": "node scripts/publish.js blog push",
+		"blog:update": "node scripts/publish.js blog update",
+		"raw": "node scripts/create-raw.js",
+		"raw:push": "node scripts/publish.js raw push",
+		"raw:update": "node scripts/publish.js raw update",
+		"bookmark": "node scripts/create-bookmark.js",
+		"bookmark:push": "git add _data/bookmarks.json && git commit -m \"new bookmark\"",
+		"changelog": "node scripts/create-changelog.js",
+		"changelog:push": "git add _data/changelog.json && git commit -m \"new changelog entry\"",
+		"mastodon": "node scripts/sync-mastodon-links.js",
+		"mastodon:push": "git add content/blog content/raw && git commit -m \"updated mastodon links\"",
+		"social": "node scripts/sync-cogsend.js"
+	},
+	"engines": {
+		"node": ">=22",
+		"pnpm": ">=11"
+	},
+	"devDependencies": {
+		"@11ty/eleventy": "^3.1.6",
+		"@11ty/eleventy-fetch": "^5.1.3",
+		"@11ty/eleventy-plugin-rss": "^3.0.0",
+		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+		"eleventy-plugin-phosphoricons": "^2.0.0",
+		"luxon": "^3.7.2",
+		"prettier": "3.6.2",
+		"sharp": "^0.35.3"
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.1101.0",
+		"@resvg/resvg-js": "^2.6.2",
+		"dotenv": "^17.4.2",
+		"eleventy-plugin-embed-everything": "^1.21.2",
+		"fuse.js": "^7.5.0",
+		"satori": "^0.29.0"
+	}
+}

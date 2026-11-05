@@ -1,0 +1,25 @@
+---
+layout: layouts/base.njk
+title: Search
+description: Search across blog posts and raw notes
+permalink: /search/
+index: noindex, nofollow
+image: /img/og/search.jpeg
+---
+
+<link rel="stylesheet" href="/css/search.css">
+
+<link rel="preload" href="/search-index-blog.json" as="fetch">
+<link rel="preload" href="/search-index-raw.json" as="fetch">
+
+<div class="search-page">
+  <h1>{{ title }}</h1>
+  <p class="search-intro">Search across all {{ collections.posts.length + collections.raw.length }} blog posts and raw notes on this site.</p>
+
+  {% set syncUrl = true %}
+  {% set autofocus = true %}
+  {% include "search-widget.njk" %}
+</div>
+
+<script src="/js/search-index.js" defer></script>
+<script src="/js/search.js" defer></script>

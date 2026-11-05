@@ -1,0 +1,32 @@
+---
+title: "Blog"
+description: "Longer posts on what I'm building, learning, and thinking about."
+date: 2026-11-01
+image: /img/og/blog.jpeg
+pagination:
+  data: collections.posts
+  size: 100
+  reverse: true
+  alias: blogPosts
+---
+{% set postsCount = collections.posts | length %}
+<div class="archive-title-row">
+	<h1>Blog</h1>
+	<a class="archive-feed-icon-link" href="/feed/" title="RSS feed" aria-label="Open RSS feeds page">
+		{% phicon "rss" %}
+	</a>
+</div>
+
+<p>Longer posts on what I'm building, learning, and thinking about.</p>
+<hr class="page-intro-divider" />
+
+{% set postslist = blogPosts %}
+{% set postslistCounter = postsCount - (pagination.pageNumber * pagination.size) %}
+{% set noReverse = true %}
+{% set showKindBadge = false %}
+{% set showTags = true %}
+{# list sits directly under the page h1, so titles are h2 (no level skip) #}
+{% set postHeadingLevel = 2 %}
+{% include "postslist.njk" %}
+
+{% include "pagination.njk" %}

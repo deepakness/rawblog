@@ -1,0 +1,35 @@
+---
+title: "Archive"
+description: "Combined archive of blog posts and raw notes."
+date: 2026-11-01
+image: /img/og/archive.jpeg
+---
+
+{% set archiveYears = collections.archiveByYear or [] %}
+
+<div class="archive-title-row">
+	<h1>Archive</h1>
+	<a class="archive-feed-icon-link" href="/feed/" title="RSS feed" aria-label="Open RSS feeds page">
+		{% phicon "rss" %}
+	</a>
+</div>
+{% if archiveYears.length %}
+{% set newestYear = archiveYears[0] %}
+<p class="archive-lead">{{ newestYear.totalCount }} blog posts and notes from {{ newestYear.year }}, organized by month.</p>
+{% else %}
+<p class="archive-lead">No posts or notes yet.</p>
+{% endif %}
+{% include "archive-type-key.njk" %}
+
+{% if archiveYears.length %}
+{% set activeYear = newestYear.year %}
+{% include "archive-years-list.njk" %}
+
+{%- css %}.archive-stream { counter-reset: start-from {{ newestYear.totalCount + 1 }} }{% endcss %}
+<div class="archive-stream">
+{% set months = newestYear.months %}
+{% include "archive-month-groups.njk" %}
+</div>
+{% else %}
+<p>No posts or notes yet.</p>
+{% endif %}
